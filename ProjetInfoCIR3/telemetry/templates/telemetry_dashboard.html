@@ -1,0 +1,36 @@
+<h1>Telemetry Dashboard</h1>
+<p>Total Requests: {{ total_requests }}</p>
+<p>Average Response Time: {{ avg_response_time }} seconds</p>
+
+<h2>Status Codes</h2>
+<ul>
+    {% for status in status_counts %}
+    <li>{{ status.status_code }}: {{ status.count }} requests</li>
+    {% endfor %}
+</ul>
+
+<h2>Recent Logs</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Path</th>
+            <th>Status Code</th>
+            <th>Response Time</th>
+            <th>IP Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ log.user.username|default:"Anonymous" }}</td>
+            <td>{{ log.path }}</td>
+            <td>{{ log.status_code }}</td>
+            <td>{{ log.response_time }}</td>
+            <td>{{ log.ip_address }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

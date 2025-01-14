@@ -27,5 +27,6 @@ urlpatterns = [
     path('logout/', home_views.custom_logout, name='logout'), # Directs to the Django logout view
     path('home/', include('home.urls')),
     path('register/', include('register.urls')),
+    path('telemetry/', include('telemetry.urls')),
 ]
 

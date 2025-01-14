@@ -61,6 +61,10 @@ LOGGING = {
     },
 }
 
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"   # Directory where collectstatic will place all files
+
 
 # END OF CUSTOM VARIABLES
 
@@ -71,6 +75,7 @@ INSTALLED_APPS = [
     'login',
     'home',
     'register',
+    'telemetry',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -87,6 +92,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'telemetry.middleware.TelemetryMiddleware',  # Add this line to include the custom middleware
 ]
 
 ROOT_URLCONF = 'ProjetInfoCIR3.urls'
