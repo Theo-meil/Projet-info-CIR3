@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'home',
     'register',
 ]
+INSTALLED_APPS += ['rest_framework']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -12,3 +12,10 @@ from django.shortcuts import redirect
 def custom_logout(request):
     logout(request)  # Logs out the user
     return redirect('login')  # Redirect to login page
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def hello_world(request):
+    return Response({"message": "Hello, World!"})
