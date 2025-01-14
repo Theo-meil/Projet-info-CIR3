@@ -19,11 +19,9 @@ from django.urls import path, include
 from login import views as login_views  # Import the views from the login app
 from django.contrib.auth import views as auth_views
 from home import views as home_views
-from home.admin import custom_admin_site
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('custom_admin/', custom_admin_site.urls),
     path('', login_views.login, name='login'), # Default redirect to the login view in the login app
     path('login/', include('login.urls')),
     path('logout/', home_views.custom_logout, name='logout'), # Directs to the Django logout view
