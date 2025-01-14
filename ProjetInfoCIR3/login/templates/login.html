@@ -7,9 +7,15 @@
 </head>
 <body>
     <div class="login-container">
+        {% if user.is_authenticated %}
+        <h2>Switch account</h2>
+        <p>You are already logged in as <strong>{{ user.username }}</strong>.</p>
+        {% else %}
         <h2>Login</h2>
+        {% endif %}
         <form method="post">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}"> <!-- Redirect to the page the user was trying to access -->
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -21,6 +27,13 @@
             <button type="submit">Login</button>
         </form>
     </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div>
         <p>Don't have an account? <a href="/register">Register</a></p>
     </div>
