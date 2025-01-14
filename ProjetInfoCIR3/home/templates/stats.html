@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Website Utilization Stats</h1>
+<ul>
+    <li>Total Visits: {{ stats.visits }}</li>
+    <li>Unique Users: {{ stats.unique_users }}</li>
+    <li>Page Views: {{ stats.page_views }}</li>
+</ul>
+{% endblock %}
