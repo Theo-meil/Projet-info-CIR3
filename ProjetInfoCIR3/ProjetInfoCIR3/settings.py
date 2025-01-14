@@ -27,24 +27,56 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# CUSTOM VARIABLES
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Ensures existing loggers are not disabled
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        # Default Django logger (set to WARNING or higher to suppress DEBUG logs)
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        # Your application logs
+        'home': {  # Replace with the name of your app
+            'handlers': ['console'], 
+            'level': 'DEBUG',  # Log only messages from your app
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',  # Suppress other non-critical logs
+    },
+}
+
+
+# END OF CUSTOM VARIABLES
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'login',
+    'home',
+    'register',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'login',
-    'home',
-    'register',
 ]
 
 MIDDLEWARE = [
