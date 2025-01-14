@@ -30,3 +30,4 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('register/', include('register.urls')),
 ]
+
