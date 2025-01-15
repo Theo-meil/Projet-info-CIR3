@@ -2,8 +2,8 @@ from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client["projetcir3"]
 # utilisateur 
-def Add_Utilisateur(Nom,Prenom,Speudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose): #qrcode
-    return db.utilisateur.insert_One({nom: Nom,prenom : Prenom , speudos: Speudos, Mdp: Mot_de_passe, email: Email, cb:Cb,status : Status, winstreak: Winstreak, win : Win , lose : Lose})  
+def Add_Utilisateur(Nom,Prenom,Pseudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose): #qrcode
+    return db.utilisateur.insert_One({nom: Nom,prenom : Prenom , pseudos: Pseudos, Mdp: Mot_de_passe, email: Email, cb:Cb,status : Status, winstreak: Winstreak, win : Win , lose : Lose})  
 
 def Sup_Utilisateur(id):
     return db.utilisateur.delete()
@@ -16,8 +16,8 @@ def Get_Utilisateur_Nom(id):
     return db.utilisateurs.find({_id : id} , {nom : 1 , _id : 0 } )
 def Get_Utilisateur_Prenom(id): 
     return db.utilisateurs.find({_id : id} , {prenom : 1 , _id : 0 })
-def Get_Utilisateur_Speudos(id): 
-    return db.utilisateurs.find({_id : id} , {speudos : 1 , _id : 0 })
+def Get_Utilisateur_Pseudos(id): 
+    return db.utilisateurs.find({_id : id} , {pseudos : 1 , _id : 0 })
 def Get_Utilisateur_Mot_de_passe(id): 
     return db.utilisateurs.find({_id : id} , {Mdp : 1 , _id : 0 })
 def Get_Utilisateur_email(id): 
@@ -39,8 +39,8 @@ def Set_Utilisateur_Nom(id,Nom):
     return db.utilisateurs.update_One({_id : id} ,{"$set" :  {nom : Nom} })
 def Set_Utilisateur_Prenom(id,Prenom): 
     return db.utilisateurs.update_One({_id : id} ,{"$set" :  {prenom : Prenom} })
-def Set_Utilisateur_Speudos(id,Speudos): 
-    return db.utilisateurs.update_One({_id : id} ,{"$set" :  {Speudos : Speudos} })
+def Set_Utilisateur_Pseudos(id,Pseudos): 
+    return db.utilisateurs.update_One({_id : id} ,{"$set" :  {Pseudos : Pseudos} })
 def Set_Utilisateur_Mot_de_passe(id,Mot_de_passe): 
     return db.utilisateurs.update_One({_id : id} , {"$set" : {Mdp : Mot_de_passe} })
 def Set_Utilisateur_email(id,Email): 
