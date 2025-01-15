@@ -1,67 +1,84 @@
-import './HomePage.css';
 import React from "react";
 import { Link } from 'react-router-dom';
+import { Button, AppBar, Toolbar, Typography, Card, CardContent, Grid, Container } from '@mui/material';
+import './HomePage.css';
 
 function HomePage() {
 
     const tournaments = [
         {id: 1, name: "FIFA", date: "14 janvier 2025", prize: "1000€"},
-        {id: 2, name: "CoD", date: "2025-15-01", prize: "1500€"},
-        {id: 3, name: "Lol", date: "2025-16-01", prize: "2000€"},
+        {id: 2, name: "CoD", date: "15 janvier 2025", prize: "1500€"},
+        {id: 3, name: "Lol", date: "16 janvier 2025", prize: "2000€"},
     ];
 
     return (
-        <div className="homepage-container">
+        <div className="homepage-container" style={{ backgroundColor: "#000", color: "#fff", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
 
-            <header className="top-bar">
-                <div className="user-info">Bienvenue, NomUtilisateur</div>
-                <div className="auth-buttons">
-                    <Link to="/login-account">
-                        <button className="login-button">Login</button>
-                    </Link>
-                    <Link to="/sign-up-account">
-                        <button className="sign-up-button">Sign up</button>
-                    </Link>
-                    <Link to="/profile">
-                        <button className="profile-button">Profile</button>
-                    </Link>
-                    <button className="disonnect-button">Disconnect</button>
-                </div>
-            </header>
+            <AppBar position="static" style={{ marginBottom: "20px", backgroundColor: "#1a1a1a" }}>
+                <Toolbar style={{ justifyContent: "space-between" }}>
+                    <Typography variant="h5" style={{ fontWeight: "bold", fontFamily: 'Arial Black, Gadget, sans-serif', color: "#fff" }}>Tournois de Jeux Vidéo</Typography>
+                    <div>
+                        <Link to="/login-account" style={{ textDecoration: 'none', marginRight: '10px' }}>
+                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Login</Button>
+                        </Link>
+                        <Link to="/sign-up-account" style={{ textDecoration: 'none', marginRight: '10px' }}>
+                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Sign Up</Button>
+                        </Link>
+                        <Link to="/profile" style={{ textDecoration: 'none', marginRight: '10px' }}>
+                            <Button variant="outlined" style={{ color: "#fff", borderColor: "#ff0000" }}>Profile</Button>
+                        </Link>
+                        <Button variant="text" style={{ color: "#fff" }}>Disconnect</Button>
+                    </div>
+                </Toolbar>
+            </AppBar>
 
-            <div className="hero-section">
-                <h1 className="hero-title">Bienvenue aux tournois de jeux vidéo</h1>
-                <p className="hero-subtitle">Rejoignez des compétitions épiques et montrez vos talents !</p>
-                <Link to="/create-event">
-                    <button className="event-button">Créer un event</button>
+            <div className="hero-section" style={{ textAlign: "center", marginBottom: "40px", flexGrow: 1 }}>
+                <Typography variant="h2" style={{ fontWeight: "bold", fontFamily: 'Arial Black, Gadget, sans-serif', color: "#ffcc00", marginBottom: "20px" }}>Bienvenue aux tournois de jeux vidéo</Typography>
+                <Typography variant="h5" style={{ color: "#ffffffb3", marginBottom: "30px" }}>
+                    Rejoignez des compétitions épiques et montrez vos talents !
+                </Typography>
+                <Link to="/create-event" style={{ textDecoration: 'none', marginRight: '10px' }}>
+                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Créer un event</Button>
                 </Link>
-                <Link to="/join-event">
-                    <button className="event-button">Rejoindre un event</button>
+                <Link to="/join-event" style={{ textDecoration: 'none' }}>
+                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Rejoindre un event</Button>
                 </Link>
             </div>
 
-            <section className="tournaments-section">
-                <h2 className="section-title">Tournois disponibles</h2>
-                <ul className="tournaments-list">
+            <Container style={{ flexGrow: 1 }}>
+                <Typography variant="h3" style={{ fontWeight: "bold", fontFamily: 'Arial Black, Gadget, sans-serif', color: "#ffcc00", textAlign: "center", marginBottom: "30px" }}>Tournois disponibles</Typography>
+                <Grid container spacing={3}>
                     {tournaments.map((tournament) => (
-                        <li key={tournament.id} className="tournament-item">
-                            <h3 className="tournament-name">{tournament.name}</h3>
-                            <p className="tournament-date">Date : {tournament.date}</p>
-                            <p className="tournament-prize">Récompense : {tournament.prize}</p>
-                            <Link to="/ticket-office">
-                                <button className="details-button">Réserver</button>
-                            </Link>
-                        </li>
+                        <Grid item xs={12} md={4} key={tournament.id}>
+                            <Card style={{ backgroundColor: "#1a1a1a", color: "#fff" }}>
+                                <CardContent>
+                                    <Typography variant="h5" component="div" style={{ fontWeight: "bold", fontFamily: 'Arial Black, Gadget, sans-serif', color: "#ffcc00" }}>
+                                        {tournament.name}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom style={{ color: "#ffffffb3" }}>
+                                        Date : {tournament.date}
+                                    </Typography>
+                                    <Typography variant="body2" style={{ color: "#fff" }}>
+                                        Récompense : {tournament.prize}
+                                    </Typography>
+                                    <Link to="/ticket-office" style={{ textDecoration: 'none' }}>
+                                        <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff", marginTop: '10px' }}>
+                                            Réserver
+                                        </Button>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     ))}
-                </ul>
-            </section>
+                </Grid>
+            </Container>
 
-            <footer className="footer">
-                <p>&copy; 2025 Tournois de Jeux Vidéo. Tous droits réservés.</p>
+            <footer className="footer" style={{ marginTop: "40px", padding: "20px 0", backgroundColor: "#1a1a1a", textAlign: "center" }}>
+                <Typography variant="body2" style={{ color: "#ffffffb3" }}>© 2025 Tournois de Jeux Vidéo. Tous droits réservés.</Typography>
                 <nav className="footer-nav">
-                    <a href="#">Contact</a>
-                    <a href="#">Conditions d'utilisation</a>
-                    <a href="#">Politique de confidentialité</a>
+                    <Link to="#" style={{ textDecoration: 'none', color: '#ffcc00', margin: '0 10px' }}>Contact</Link>
+                    <Link to="#" style={{ textDecoration: 'none', color: '#ffcc00', margin: '0 10px' }}>Conditions d'utilisation</Link>
+                    <Link to="#" style={{ textDecoration: 'none', color: '#ffcc00', margin: '0 10px' }}>Politique de confidentialité</Link>
                 </nav>
             </footer>
         </div>
