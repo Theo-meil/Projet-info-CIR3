@@ -20,3 +20,10 @@ def custom_logout(request):
 def role_management(request):
     # Page that allows the user to manage other users' roles. Managers and admin can set the role of other users (except admin, which can only be set by another admin)
     return render(request, 'role_management.html')
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['GET'])
+def hello_world(request):
+    return Response({"message": "Hello, World!"})
