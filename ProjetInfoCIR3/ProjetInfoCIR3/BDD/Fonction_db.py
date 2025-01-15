@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
-db = client["rojetCir3full"]
+db = client["projetcir3"]
 # utilisateur 
 def Add_Utilisateur(Nom,Prenom,Speudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose): #qrcode
     return db.utilisateur.insert_One({nom: Nom,prenom : Prenom , speudos: Speudos, Mdp: Mot_de_passe, email: Email, cb:Cb,status : Status, winstreak: Winstreak, win : Win , lose : Lose})  
@@ -142,30 +142,30 @@ def Sup_Match():
 
 #getteur Match
 def Get_Match(): 
-    return db.Match.find({},{_id : 1 })
+    return db.match.find({},{_id : 1 })
 def Get_Match_equipe1(id): 
-    return db.Match.find({_id : id} , {equipe1 : 1 , _id : 0 } )
+    return db.match.find({_id : id} , {equipe1 : 1 , _id : 0 } )
 def Get_Match_equipe2(id): 
-    return db.Match.find({_id : id} , {equipe2 : 1 , _id : 0 })
+    return db.match.find({_id : id} , {equipe2 : 1 , _id : 0 })
 def Get_Match_date(id): 
-    return db.Match.find({_id : id} , {date : 1 , _id : 0 })
+    return db.match.find({_id : id} , {date : 1 , _id : 0 })
 def Get_Match_score1(id): 
-    return db.Match.find({_id : id} , {score1: 1 , _id : 0 })
+    return db.match.find({_id : id} , {score1: 1 , _id : 0 })
 def Get_Match_score2(id): 
-    return db.Match.find({_id : id} , {score2 : 1 , _id : 0 })
+    return db.match.find({_id : id} , {score2 : 1 , _id : 0 })
 def Get_Match_wineur(id):
-    return db.Match.find({_id : id} , {wineur : 1 , _id : 0 })
+    return db.match.find({_id : id} , {wineur : 1 , _id : 0 })
 
 #setteur Match
 def Set_Match_equipe1(id,Equipe): 
-    return db.event.updateOne({_id : id} ,{"$set" :  {equipe1 : Equipe} })
+    return db.match.updateOne({_id : id} ,{"$set" :  {equipe1 : Equipe} })
 def Set_Match_equipe2(id,Equipe): 
-    return db.event.updateOne({_id : id} ,{"$set" :  {equipe2 : Equipe} })
+    return db.match.updateOne({_id : id} ,{"$set" :  {equipe2 : Equipe} })
 def Set_Match_date(id,Date): 
-    return db.event.updateOne({_id : id} ,{"$set" :  {date : Date} })
+    return db.match.updateOne({_id : id} ,{"$set" :  {date : Date} })
 def Set_Match_score1(id,Score): 
-    return db.event.updateOne({_id : id} , {"$set" : {score1: Score} })
+    return db.match.updateOne({_id : id} , {"$set" : {score1: Score} })
 def Set_Match_score2(id,Score): 
-    return db.event.updateOne({_id : id} ,{"$set" :  {score2: Score} })
+    return db.match.updateOne({_id : id} ,{"$set" :  {score2: Score} })
 def Set_Match_wineur(id,Wineur): 
-    return db.event.updateOne({_id : id}, {"$set" :  {wineur : Wineur} })
+    return db.match.updateOne({_id : id}, {"$set" :  {wineur : Wineur} })
