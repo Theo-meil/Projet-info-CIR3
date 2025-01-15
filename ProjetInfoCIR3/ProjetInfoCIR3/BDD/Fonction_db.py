@@ -1,12 +1,12 @@
 from pymongo import MongoClient
 client = MongoClient('mongodb+srv://theomeilliez:Gv1ZmorY2lczag99@projetcir3full.apni4.mongodb.net/?retryWrites=true&w=majority&appName=projetCIR3full')
 db = client["projetcir3"]
-# utilisateur 
-def Add_Utilisateur(Nom,Prenom,Pseudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose): #qrcode
-    return db.utilisateur.insert_One({nom: Nom,prenom : Prenom , pseudos: Pseudos, Mdp: Mot_de_passe, email: Email, cb:Cb,status : Status, winstreak: Winstreak, win : Win , lose : Lose})  
+# utilisateur
+def Add_Utilisateur(Nom,Prenom,Pseudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose , Qrcode): #qrcode
+    return db.utilisateur.insert_One({nom: Nom,prenom : Prenom , pseudos: Pseudos, Mdp: Mot_de_passe, email: Email, cb:Cb,status : Status, winstreak: Winstreak, win : Win , lose : Lose , qrcode : Qrcode})  
 
 def Sup_Utilisateur(id):
-    return db.utilisateur.delete()
+    return db.utilisateur.delete_one({_id : id})
 
 
 # getteur de la table utilisateur 
@@ -17,7 +17,7 @@ def Get_Utilisateur_Nom(id):
 def Get_Utilisateur_Prenom(id): 
     return db.utilisateurs.find({_id : id} , {prenom : 1 , _id : 0 })
 def Get_Utilisateur_Pseudos(id): 
-    return db.utilisateurs.find({_id : id} , {pseudos : 1 , _id : 0 })
+    return db.utilisateurs.find({_id : id} , {pseudos: 1 , _id : 0 })
 def Get_Utilisateur_Mot_de_passe(id): 
     return db.utilisateurs.find({_id : id} , {Mdp : 1 , _id : 0 })
 def Get_Utilisateur_email(id): 
@@ -25,15 +25,15 @@ def Get_Utilisateur_email(id):
 def Get_Utilisateur_cb(id): 
     return db.utilisateurs.find({_id : id} , {cb : 1 , _id : 0 })
 def Get_Utilisateur_Status(id): 
-    user = db.utilisateurs.find_one({_id: id}, {status: 1, _id: 0})
-    return user['status'] if user else None
+    return db.utilisateurs.find({_id : id} , {status : 1 , _id : 0 })
 def Get_Utilisateur_Winstreak(id): 
     return db.utilisateurs.find({_id : id} , {winstreak : 1 , _id : 0 })
 def Get_Utilisateur_Win(id): 
     return db.utilisateurs.find({_id : id} , {win : 1 , _id : 0 })
 def Get_Utilisateur_email(id): 
     return db.utilisateurs.find({_id : id} , {lose : 1 , _id : 0 })
-
+def Get_Utilisateur_qrcode(id): 
+    return db.utilisateurs.find({_id : id} , {qrcode : 1 , _id : 0 })
 # Setteur de la tabble utilisateur
 
 def Set_Utilisateur_Nom(id,Nom): 
@@ -41,7 +41,8 @@ def Set_Utilisateur_Nom(id,Nom):
 def Set_Utilisateur_Prenom(id,Prenom): 
     return db.utilisateurs.update_One({_id : id} ,{"$set" :  {prenom : Prenom} })
 def Set_Utilisateur_Pseudos(id,Pseudos): 
-    return db.utilisateurs.update_One({_id : id} ,{"$set" :  {Pseudos : Pseudos} })
+    return db.utilisateurs.update_One({_id : id} ,{"$set" :  {pseudos: Pseudos
+} })
 def Set_Utilisateur_Mot_de_passe(id,Mot_de_passe): 
     return db.utilisateurs.update_One({_id : id} , {"$set" : {Mdp : Mot_de_passe} })
 def Set_Utilisateur_email(id,Email): 
@@ -56,6 +57,8 @@ def Set_Utilisateur_Win(id,Win):
     return db.utilisateurs.update_One({_id : id},{"$set" : {win : Win} })
 def Set_Utilisateur_lose(id,Lose): 
     return db.utilisateurs.update_One({_id : id} ,{"$set" :  {lose : Lose} })
+def Set_Utilisateur_lose(id,Qrcode): 
+    return db.utilisateurs.update_One({_id : id} ,{"$set" :  {qrcode : Qrcode} })
 
 
 
@@ -65,7 +68,7 @@ def Add_Equipe(Nom,Tab_joueur,Manageur,Jeux):
     return db.Equipe.insertOne({nom: Nom, tab_joueur : Tab_joueur, manageur : Manageur, jeux : Jeux})
 
 def Sup_Equipe(id):
-    return 0
+    return db.Equipe.delete_one({_id : id})
 
 #getteur de Equipe
 def Get_Equipe(): 
@@ -95,8 +98,8 @@ def Set_Equipes_jeux(id,Jeux):
 def Add_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status):
     return db.Event.insert_one({nom : Nom , date_deput: Date_debut, date_fin : Date_fin, places_max : Places_max, places_libres : Places_libres, cash_price : Cash_price, status : Status})
 
-def Sup_Event():
-    return 0
+def Sup_Event(id):
+    return db.Event.delete_one({_id : id})
 
 # getteur event 
 
@@ -134,11 +137,11 @@ def Set_Event_Status(id,Status):
     return db.event.update_One({_id : id}, {"$set" :  {status : Status} })
 
 # match
-def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur):
-    return db.Event.insertone({equipe1 : Equipe1, equipe2 : Equipe2, date : Date, score1 : Score1, score2 : Score2, wineur : Wineur})
+def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre):
+    return db.Event.insertone({equipe1 : Equipe1, equipe2 : Equipe2, date : Date, score1 : Score1, score2 : Score2, wineur : Wineur, arbitre : Arbitre})
 
-def Sup_Match():
-    return 0
+def Sup_Match(id):
+    return db.match.delete_one({_id : id})
 
 
 #getteur Match
@@ -156,17 +159,20 @@ def Get_Match_score2(id):
     return db.match.find({_id : id} , {score2 : 1 , _id : 0 })
 def Get_Match_wineur(id):
     return db.match.find({_id : id} , {wineur : 1 , _id : 0 })
-
+def Get_Match_Arbitre(id):
+    return db.match.find({_id : id} , {arbitre : 1 , _id : 0 })
 #setteur Match
 def Set_Match_equipe1(id,Equipe): 
-    return db.match.updateOne({_id : id} ,{"$set" :  {equipe1 : Equipe} })
+    return db.match.update_One({_id : id} ,{"$set" :  {equipe1 : Equipe} })
 def Set_Match_equipe2(id,Equipe): 
-    return db.match.updateOne({_id : id} ,{"$set" :  {equipe2 : Equipe} })
+    return db.match.update_One({_id : id} ,{"$set" :  {equipe2 : Equipe} })
 def Set_Match_date(id,Date): 
-    return db.match.updateOne({_id : id} ,{"$set" :  {date : Date} })
+    return db.match.update_One({_id : id} ,{"$set" :  {date : Date} })
 def Set_Match_score1(id,Score): 
-    return db.match.updateOne({_id : id} , {"$set" : {score1: Score} })
+    return db.match.update_One({_id : id} , {"$set" : {score1: Score} })
 def Set_Match_score2(id,Score): 
-    return db.match.updateOne({_id : id} ,{"$set" :  {score2: Score} })
+    return db.match.update_One({_id : id} ,{"$set" :  {score2: Score} })
 def Set_Match_wineur(id,Wineur): 
-    return db.match.updateOne({_id : id}, {"$set" :  {wineur : Wineur} })
+    return db.match.update_One({_id : id}, {"$set" :  {wineur : Wineur} })
+def Set_Match_wineur(id,Arbitre): 
+    return db.match.update_One({_id : id}, {"$set" :  {arbitre : Arbitre} })
