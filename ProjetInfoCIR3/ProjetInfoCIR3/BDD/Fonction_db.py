@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb+srv://theomeilliez:Gv1ZmorY2lczag99@projetcir3full.apni4.mongodb.net/?retryWrites=true&w=majority&appName=projetCIR3full')
 db = client["projetcir3"]
 # utilisateur 
 def Add_Utilisateur(Nom,Prenom,Pseudos,Mot_de_passe,Email,Cb,Status,Winstreak,Win,Lose): #qrcode
