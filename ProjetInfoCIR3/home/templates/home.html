@@ -14,6 +14,7 @@
                 <li><a href="/home">Home</a></li>
                 <li><a href="/login">Login</a></li>
             </ul>
+            
         </nav>
         {% if user.is_authenticated %}
         <div class="user-info">
@@ -21,6 +22,21 @@
             <p>Email: <strong>{{ user.email }}</strong></p>
             <p><a href="{% url 'logout' %}">Logout</a></p>
         </div>
+        {% if user_role == 'Admin' %}
+        <div class="admin-info">
+            <p>Welcome, Admin! You have full access.</p>
+            <!--ADD ADMIN FUNCTIONS-->
+        </div>
+        {% elif user_role == 'Manager' %}
+        <div class="manager-info">
+            <p>Welcome, Manager! You can manage users and view reports.</p>
+            <!--ADD MANAGER FUNCTIONS-->
+        </div>
+        {% else %}
+        <div class="user-info">
+            <p>Welcome, User! You have limited access.</p>
+        </div>
+        {% endif %}
         {% else %}
         <p><a href="/login">Log in</a> to see personalized information.</p>
         {% endif %}

@@ -25,7 +25,8 @@ def Get_Utilisateur_email(id):
 def Get_Utilisateur_cb(id): 
     return db.utilisateurs.find({_id : id} , {cb : 1 , _id : 0 })
 def Get_Utilisateur_Status(id): 
-    return db.utilisateurs.find({_id : id} , {status : 1 , _id : 0 })
+    user = db.utilisateurs.find_one({_id: id}, {status: 1, _id: 0})
+    return user['status'] if user else None
 def Get_Utilisateur_Winstreak(id): 
     return db.utilisateurs.find({_id : id} , {winstreak : 1 , _id : 0 })
 def Get_Utilisateur_Win(id): 
