@@ -1,7 +1,6 @@
 import "./LoginPage.css"
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-import HomePage from "./HomePage.jsx";
 
 function SignUpPage() {
     const [formData, setFormData] = useState({
@@ -31,7 +30,7 @@ function SignUpPage() {
 
     return (
         <div className="create-account-container">
-            <h1>Créer un compte</h1>
+            <h1 className="sign-up-title">Créer un compte</h1>
             <form onSubmit={handleSubmit} className="create-account-form">
                 <div className="form-group">
                     <label htmlFor="username">Nom d'utilisateur</label>
@@ -80,7 +79,7 @@ function SignUpPage() {
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" className="submit-button">Créer mon compte</button>
                 <Link to="/">
-                    <button>Retour Menu</button>
+                    <button type="button" >Retour Menu</button>
                 </Link>
             </form>
         </div>
