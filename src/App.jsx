@@ -7,6 +7,7 @@ import ProfilePage from './ProfilePage.jsx'
 import CreateEventPage from './CreateEventPage.jsx'
 import JoinEventPage from './JoinEventPage.jsx'
 import ShowEventPage from './ShowEventPage.jsx'
+import TicketOfficePage from "./assets/TicketOfficePage.jsx";
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/create-event" element={<CreateEventPage />} />
                     <Route path="/join-event" element={<JoinEventPage />} />
                     <Route path="/show-event" element={<ShowEventPage />} />
+                    <Route path="/ticket-office" element={<TicketOfficePage />} />
                 </Routes>
             </div>
         </BrowserRouter>

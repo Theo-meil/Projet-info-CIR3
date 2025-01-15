@@ -29,7 +29,6 @@ function HomePage() {
                 </div>
             </header>
 
-
             <div className="hero-section">
                 <h1 className="hero-title">Bienvenue aux tournois de jeux vidéo</h1>
                 <p className="hero-subtitle">Rejoignez des compétitions épiques et montrez vos talents !</p>
@@ -49,7 +48,9 @@ function HomePage() {
                             <h3 className="tournament-name">{tournament.name}</h3>
                             <p className="tournament-date">Date : {tournament.date}</p>
                             <p className="tournament-prize">Récompense : {tournament.prize}</p>
-                            <button className="details-button">Voir détails</button>
+                            <Link to="/ticket-office">
+                                <button className="details-button">Réserver</button>
+                            </Link>
                         </li>
                     ))}
                 </ul>
