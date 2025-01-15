@@ -7,7 +7,7 @@ import ProfilePage from './ProfilePage.jsx'
 import CreateEventPage from './CreateEventPage.jsx'
 import JoinEventPage from './JoinEventPage.jsx'
 import ShowEventPage from './ShowEventPage.jsx'
-import TicketOfficePage from "./assets/TicketOfficePage.jsx";
+import TicketOfficePage from "./TicketOfficePage.jsx";
 
 function App() {
     return (
