@@ -124,8 +124,7 @@ def Sup_Event(id):
 # getteur event 
 
 def Get_Event(): 
-    
-    return list(db.event.find())
+    return list(db.Event.find())
 def Get_Event_nom(id): 
     nom = db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
     return nom["nom"] if nom else None

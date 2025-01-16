@@ -30,15 +30,21 @@
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required><br>
                 <label for="score1">Score 1:</label>
-                <input type="number" id="score1" name="score1" required><br>
+                <input type="number" id="score1" name="score1"><br>
                 <label for="score2">Score 2:</label>
-                <input type="number" id="score2" name="score2" required><br>
-                <label for="winner">Winner:</label>
-                <input type="text" id="winner" name="winner" required><br>
+                <input type="number" id="score2" name="score2"><br>
+                <label for="winner">Winner: (leave blank if match didn't occur)</label>
+                <input type="text" id="winner" name="winner"><br>
                 <label for="referee">Referee:</label>
                 <select id="referee" name="referee" required>
                     {% for referee in referees %}
                     <option value="{{ referee.pseudo }}">{{ referee.pseudo }}</option>
+                    {% endfor %}
+                </select><br>
+                <label for="event">Event:</label>
+                <select id="event" name="event" required>
+                    {% for event in events %}
+                    <option value="{{ event.nom }}">{{ event.nom }}</option>
                     {% endfor %}
                 </select><br>
                 <button type="submit">Create Match</button>
@@ -49,7 +55,7 @@
             <ul>
                 {% for match in matches %}
                 <li>
-                    {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }}
+                    {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }} - Event: {{ match.event }}
                     <form method="post" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="match_id" value="{{ match.inserted_id }}">
@@ -77,6 +83,12 @@
                         <select id="referee" name="referee" required>
                             {% for referee in referees %}
                             <option value="{{ referee.pseudo }}" {% if referee.pseudo == match.referee %}selected{% endif %}>{{ referee.pseudo }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="event">Event:</label>
+                        <select id="event" name="event" required>
+                            {% for event in events %}
+                            <option value="{{ event.nom }}" {% if event.nom == match.event %}selected{% endif %}>{{ event.nom }}</option>
                             {% endfor %}
                         </select>
                         <button type="submit" name="edit_match">Edit Match</button>
