@@ -8,7 +8,7 @@ function HomePage() {
     const tournaments = [
         {id: 1, name: "FIFA", date: "14 janvier 2025", prize: "1000€"},
         {id: 2, name: "CoD", date: "15 janvier 2025", prize: "1500€"},
-        {id: 3, name: "Lol", date: "16 janvier 2025", prize: "2000€"},
+        {id: 3, name: "LoL", date: "16 janvier 2025", prize: "2000€"},
     ];
 
     return (
@@ -19,15 +19,15 @@ function HomePage() {
                     <Typography variant="h5" style={{ fontWeight: "bold", fontFamily: 'Arial Black, Gadget, sans-serif', color: "#fff" }}>Tournois de Jeux Vidéo</Typography>
                     <div>
                         <Link to="/login-account" style={{ textDecoration: 'none', marginRight: '10px' }}>
-                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Login</Button>
+                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Se connecter</Button>
                         </Link>
                         <Link to="/sign-up-account" style={{ textDecoration: 'none', marginRight: '10px' }}>
-                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Sign Up</Button>
+                            <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Créer un compte</Button>
                         </Link>
                         <Link to="/profile" style={{ textDecoration: 'none', marginRight: '10px' }}>
-                            <Button variant="outlined" style={{ color: "#fff", borderColor: "#ff0000" }}>Profile</Button>
+                            <Button variant="outlined" style={{ color: "#fff", borderColor: "#ff0000" }}>Profie</Button>
                         </Link>
-                        <Button variant="text" style={{ color: "#fff" }}>Disconnect</Button>
+                        <Button variant="text" style={{ color: "#fff" }}>Se déconnecter</Button>
                     </div>
                 </Toolbar>
             </AppBar>
@@ -38,10 +38,10 @@ function HomePage() {
                     Rejoignez des compétitions épiques et montrez vos talents !
                 </Typography>
                 <Link to="/create-event" style={{ textDecoration: 'none', marginRight: '10px' }}>
-                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Créer un event</Button>
+                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Créer un évenement</Button>
                 </Link>
                 <Link to="/join-event" style={{ textDecoration: 'none' }}>
-                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Rejoindre un event</Button>
+                    <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }} size="large">Rejoindre un évenement</Button>
                 </Link>
             </div>
 
