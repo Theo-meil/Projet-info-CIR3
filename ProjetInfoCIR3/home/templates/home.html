@@ -23,7 +23,7 @@
         </div>
         {% if user_role == 'admin' %}
         <div class="admin-info">
-            <p>Welcome, Admin! You have full access.</p>
+            <p>Admin menu :</p>
             <!--ADD ADMIN FUNCTIONS-->
             <div>
                 <a href="/telemetry">View website stats and logs</a>
@@ -32,7 +32,7 @@
         {% endif %}
         {% if user_role == 'manager' or user_role == 'admin' %}
         <div class="manager-info">
-            <p>Welcome, Manager! You can manage users and view reports.</p>
+            <p>Manager menu :</p>
             <!--ADD MANAGER FUNCTIONS-->
             <div>
                 <a href="./manage_matches">Manage Matches</a>
@@ -46,7 +46,7 @@
         {% endif %}
         {% if user_role == 'user' %}
         <div class="user-info">
-            <p>Welcome, user! You have limited access.</p>
+            <p>WUser menu :</p>
         </div>
         {% endif %}
         {% else %}
