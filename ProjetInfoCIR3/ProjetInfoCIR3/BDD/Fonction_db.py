@@ -50,30 +50,41 @@ def Get_Utilisateur_qrcode(id):
 # Setteur de la tabble utilisateur
 
 def Set_utilisateur(Nom,Prenom,Pseudo,Mot_de_passe,Email,Status,Winstreak,Win,Lose):
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"nom": Nom,"prenom" : Prenom , "pseudo": Pseudo, "mdp": Mot_de_passe, "email": Email, "status" : Status, "winstreak": Winstreak, "win" : Win , "lose" : Lose} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"nom": Nom,"prenom" : Prenom , "pseudo": Pseudo, "mdp": Mot_de_passe, "email": Email, "status" : Status, "winstreak": Winstreak, "win" : Win , "lose" : Lose} })
+    return result.modified_count > 0
 def Set_Utilisateur_Nom(id,Nom): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    return result.modified_count > 0
 def Set_Utilisateur_Prenom(id,Prenom): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"prenom" : Prenom} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"prenom" : Prenom} })
+    return result.modified_count > 0
 def Set_Utilisateur_Pseudos(id,Pseudo): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"pseudo": Pseudo} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"pseudo": Pseudo} })
+    return result.modified_count > 0
 def Set_Utilisateur_Mot_de_passe(id,Mot_de_passe): 
-    return db.utilisateurs.update_one({"_id" : id} , {"$set" : {"mdp" : Mot_de_passe} })
+    result = db.utilisateurs.update_one({"_id" : id} , {"$set" : {"mdp" : Mot_de_passe} })
+    return result.modified_count > 0
 def Set_Utilisateur_email(id,Email): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"email" : Email} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"email" : Email} })
+    return result.modified_count > 0
 def Set_Utilisateur_cb(id,Cb): 
-    return db.utilisateurs.update_one({"_id" : id}, {"$set" :  {"cb" : Cb} })
+    result = db.utilisateurs.update_one({"_id" : id}, {"$set" :  {"cb" : Cb} })
+    return result.modified_count > 0
 def Set_Utilisateur_Status(id,Status): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"status" : Status} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"status" : Status} })
+    return result.modified_count > 0
 def Set_Utilisateur_Winstreak(id,Winstreak): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"winstreak" : Winstreak} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"winstreak" : Winstreak} })
+    return result.modified_count > 0
 def Set_Utilisateur_Win(id,Win): 
     result =db.utilisateurs.update_one({"_id" : id},{"$set" : {"win" : Win} })
     return result.modified_count > 0
 def Set_Utilisateur_lose(id,Lose): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"lose" : Lose} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"lose" : Lose} })
+    return result.modified_count > 0
 def Set_Utilisateur_lose(id,Qrcode): 
-    return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"qrcode" : Qrcode} })
+    result = db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"qrcode" : Qrcode} })
+    return result.modified_count > 0
 
 
 
@@ -103,17 +114,20 @@ def Get_Equipe_jeux(id):
 
 #setteur de Equipes
 def Set_Equipes(Nom,Tab_joueur,Manageur,Jeux):
-    return db.Equipes.update_one({"_id" : id} ,{"$set" : {"nom": Nom, "tab_joueur" : Tab_joueur, "manageur" : Manageur, "jeux" : Jeux}})
+    result = db.Equipes.update_one({"_id" : id} ,{"$set" : {"nom": Nom, "tab_joueur" : Tab_joueur, "manageur" : Manageur, "jeux" : Jeux}})
+    return result.modified_count > 0
 def Set_Equipes_Nom(id,Nom): 
-    return db.Equipes.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    result = db.Equipes.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    return result.modified_count > 0
 def Set_Equipes_tab_joueur(id,Tab_joueurs): 
-    return db.Equipes.update_one({"_id" : id} ,{"$set" :  {"tab_joueur" : Tab_joueurs} })
+    result = db.Equipes.update_one({"_id" : id} ,{"$set" :  {"tab_joueur" : Tab_joueurs} })
+    return result.modified_count > 0
 def Set_Equipes_Manageur(id,Manageur): 
-    return db.Equipes.update_one({"_id" : id} ,{"$set" :  {"manageur" : Manageur} })
-
+    result = db.Equipes.update_one({"_id" : id} ,{"$set" :  {"manageur" : Manageur} })
+    return result.modified_count > 0
 def Set_Equipes_jeux(id,Jeux): 
-    return db.Equipes.update_one({"_id" : id} ,{"$set" :  {"jeux" : Jeux} })
-
+    result = db.Equipes.update_one({"_id" : id} ,{"$set" :  {"jeux" : Jeux} })
+    return result.modified_count > 0
 
 #table Event ( tournoi)
 def Add_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status,prix,tab_inscrit):
@@ -156,25 +170,35 @@ def Get_Event_inscrit(id):
 
 #setteur event
 def Set_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status,prix,tab_inscrit): 
-    return db.event.update_One({"_id" : id} ,{"$set" :   {"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status,"prix":prix, "inscrit":tab_inscrit}})
+    result = db.event.update_One({"_id" : id} ,{"$set" :   {"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status,"prix":prix, "inscrit":tab_inscrit}})
+    return result.modified_count > 0
 def Set_Event_nom(id,Nom): 
-    return db.event.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    result = db.event.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
+    return result.modified_count > 0
 def Set_Event_date_debut(id,Date_debut): 
-    return db.event.update_one({"_id" : id} ,{"$set" :  {"date_debut" : Date_debut} })
+    result = db.event.update_one({"_id" : id} ,{"$set" :  {"date_debut" : Date_debut} })
+    return result.modified_count > 0
 def Set_Event_date_fin(id,Date_fin): 
-    return db.event.update_one({"_id" : id} ,{"$set" :  {"date_fin" : Date_fin} })
+    result = db.event.update_one({"_id" : id} ,{"$set" :  {"date_fin" : Date_fin} })
+    return result.modified_count > 0
 def Set_Event_places_max(id,Places_max): 
-    return db.event.update_one({"_id" : id} , {"$set" : {"places_max" : Places_max} })
+    result = db.event.update_one({"_id" : id} , {"$set" : {"places_max" : Places_max} })
+    return result.modified_count > 0
 def Set_Event_places_min(id,Places_libres): 
-    return db.event.update_one({"_id" : id} ,{"$set" :  {"place_libres": Places_libres} })
+    result = db.event.update_one({"_id" : id} ,{"$set" :  {"place_libres": Places_libres} })
+    return result.modified_count > 0
 def Set_Event_cash_price(id,Cash_price): 
-    return db.event.update_one({"_id" : id}, {"$set" :  {"cash_price" : Cash_price} })
+    result = db.event.update_one({"_id" : id}, {"$set" :  {"cash_price" : Cash_price} })
+    return result.modified_count > 0
 def Set_Event_Status(id,Status): 
-    return db.event.update_one({"_id" : id}, {"$set" :  {"status" : Status} })
+    result = db.event.update_one({"_id" : id}, {"$set" :  {"status" : Status} })
+    return result.modified_count > 0
 def Set_Event_prix(id,prix): 
-    return db.event.update_one({"_id" : id}, {"$set" :  {"prix" : prix} })
+    result = db.event.update_one({"_id" : id}, {"$set" :  {"prix" : prix} })
+    return result.modified_count > 0
 def Set_Event_inscrit(id,inscrit): 
-    return db.event.update_one({"_id" : id}, {"$set" :  {"inscrit" : inscrit} })
+    result = db.event.update_one({"_id" : id}, {"$set" :  {"inscrit" : inscrit} })
+    return result.modified_count > 0
 
 # match
 def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event):
@@ -215,22 +239,32 @@ def Get_Match_event(id):
 
 #setteur Match
 def Set_Match(id,Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event ):
-    return db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre ,"_event": _event} })
-
+    result = db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre ,"_event": _event} })
+    return result.modified_count > 0
 def Set_Match_equipe1(id,Equipe): 
-    return db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : Equipe} })
+    result = db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : Equipe} })
+    return result.modified_count > 0
 def Set_Match_equipe2(id,Equipe): 
-    return db.match.update_one({"_id" : id} ,{"$set" :  {"equipe2" : Equipe} })
+    result = db.match.update_one({"_id" : id} ,{"$set" :  {"equipe2" : Equipe} })
+    return result.modified_count > 0
 def Set_Match_date(id,Date): 
-    return db.match.update_one({"_id" : id} ,{"$set" :  {"date" : Date} })
+    result = db.match.update_one({"_id" : id} ,{"$set" :  {"date" : Date} })
+    return result.modified_count > 0
 def Set_Match_score1(id,Score): 
-    return db.match.update_one({"_id" : id} , {"$set" : {"score1": Score} })
+    result = db.match.update_one({"_id" : id} , {"$set" : {"score1": Score} })
+    return result.modified_count > 0
 def Set_Match_score2(id,Score): 
-    return db.match.update_one({"_id" : id} ,{"$set" :  {"score2": Score} })
+    result = db.match.update_one({"_id" : id} ,{"$set" :  {"score2": Score} })
+    return result.modified_count > 0
 def Set_Match_wineur(id,Wineur): 
-    return db.match.update_one({"_id" : id}, {"$set" :  {"wineur" : Wineur} })
+    result = db.match.update_one({"_id" : id}, {"$set" :  {"wineur" : Wineur} })
+    return result.modified_count > 0
 def Set_Match_wineur(id,Arbitre): 
-    return db.match.update_one({"_id" : id}, {"$set" :  {"arbitre" : Arbitre} })
+    result = db.match.update_one({"_id" : id}, {"$set" :  {"arbitre" : Arbitre} })
+    return result.modified_count > 0
 def Set_Match_wineur(id,_event): 
-    return db.match.update_one({"_id" : id}, {"$set" :  {"_event" : _event} })
+    result =db.match.update_one({"_id" : id}, {"$set" :  {"_event" : _event} })
+    return result.modified_count > 0
+
+
 
