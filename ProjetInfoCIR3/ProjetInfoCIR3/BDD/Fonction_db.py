@@ -40,7 +40,7 @@ def Get_Utilisateur_Winstreak(id):
     return winstreak["winstreak"] if winstreak else None
 def Get_Utilisateur_Win(id): 
     Win = db.utilisateurs.find_one({"_id" : id} , {"win" : 1 , "_id" : 0 })
-    return Win["win"] if user else None
+    return Win["win"] if Win else None
 def Get_Utilisateur_email(id):
     lose = db.utilisateurs.find_one({"_id" : id} , {"lose" : 1 , "_id" : 0 })
     return lose["lose"] if lose else None
