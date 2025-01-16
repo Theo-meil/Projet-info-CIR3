@@ -13,40 +13,40 @@ def Get_Utilisateur():
     return list(db.utilisateur.find())
 def Get_Utilisateur_Id(pseudo):
     id =  db.utilisateur.find_one({"pseudo": pseudo}, {"_id": 1})
-    return id["pseudo"] if user else None
+    return id["pseudo"] if id else None
 def Get_Utilisateur_Nom(id): 
     Nom =db.utilisateurs.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
-    return  Nom["nom"] if user else None
+    return  Nom["nom"] if Nom else None
 def Get_Utilisateur_Prenom(id): 
     Prenom =db.utilisateurs.find_one({"_id" : id} , {"prenom" : 1 , "_id" : 0 })
-    return Prenom["prenom"] if user else None
+    return Prenom["prenom"] if Prenom else None
 def Get_Utilisateur_Pseudos(id): 
     Pseudos =db.utilisateurs.find_one({"_id" : id} , {"pseudo": 1 , "_id" : 0 })
-    return Pseudos["pseudo"] if user else None
+    return Pseudos["pseudo"] if Pseudos else None
 def Get_Utilisateur_Mot_de_passe(id): 
     mdp =db.utilisateurs.find_one({"_id" : id} , {"mdp" : 1 , "_id" : 0 })
-    return mdp["mdp"] if user else None
+    return mdp["mdp"] if mdp else None
 def Get_Utilisateur_email(id): 
     email =db.utilisateurs.find_one({"_id" : id} , {"email" : 1 , "_id" : 0 })
-    return email["email"] if user else None
+    return email["email"] if email else None
 def Get_Utilisateur_cb(id): 
     cb =db.utilisateurs.find_one({"_id" : id} , {"cb" : 1 , "_id" : 0 })
-    return cb["cb"] if user else None
+    return cb["cb"] if cb else None
 def Get_Utilisateur_Status(id): 
     status = db.utilisateurs.find_one({"_id": id}, {"status": 1, "_id": 0})
-    return status["status"] if user else None
+    return status["status"] if status else None
 def Get_Utilisateur_Winstreak(id): 
     winstreak = db.utilisateurs.find_one({"_id" : id} , {"winstreak" : 1 , "_id" : 0 })
-    return winstreak["winstreak"] if user else None
+    return winstreak["winstreak"] if winstreak else None
 def Get_Utilisateur_Win(id): 
     Win = db.utilisateurs.find_one({"_id" : id} , {"win" : 1 , "_id" : 0 })
     return Win["win"] if user else None
 def Get_Utilisateur_email(id):
     lose = db.utilisateurs.find_one({"_id" : id} , {"lose" : 1 , "_id" : 0 })
-    return lose["lose"] if user else None
+    return lose["lose"] if lose else None
 def Get_Utilisateur_qrcode(id): 
     qrcode =db.utilisateurs.find_one({"_id" : id} , {"qrcode" : 1 , "_id" : 0 })
-    return qrcode["qrcode"]
+    return qrcode["qrcode"] if qrcode else None
 # Setteur de la tabble utilisateur
 
 def Set_utilisateur(Nom,Prenom,Pseudo,Mot_de_passe,Email,Status,Winstreak,Win,Lose):
@@ -89,16 +89,16 @@ def Get_Equipe():
     return list(db.utilisateur.find())
 def Get_Equipe_Nom(id): 
     Nom = db.Equipes.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
-    return Nom["nom"]if user else None
+    return Nom["nom"]if Nom else None
 def Get_Equipe_tab_joueur(id): 
     tab_joueur =db.Equipes.find_one({"_id" : id} , {"tab_joueur" : 1 , "_id" : 0 })
-    return list(tab_joueur["tab_joueur"]) if user else None
+    return list(tab_joueur["tab_joueur"]) if tab_joueur else None
 def Get_Equipe_Manageur(id): 
     Manageur : db.Equipes.find_one({"_id" : id} , {"Manageur" : 1 , "_id" : 0 })
-    return Manageur["Manageur"] if user else None
+    return Manageur["Manageur"] if Manageur else None
 def Get_Equipe_jeux(id): 
     jeux =db.Equipes.find_one({"_id" : id} , {"jeux" : 1 , "_id" : 0 })
-    return jeux["jeux"] if user else None
+    return jeux["jeux"] if jeux else None
 
 #setteur de Equipes
 def Set_Equipes(Nom,Tab_joueur,Manageur,Jeux):
@@ -127,19 +127,26 @@ def Get_Event():
     
     return list(db.event.find())
 def Get_Event_nom(id): 
-    return db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    nom = db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    return nom["nom"] if nom else None
 def Get_Event_date_debut(id): 
-    return db.event.find_one({"_id" : id} , {"date_debut" : 1 , "_id" : 0 })
+    debut = db.event.find_one({"_id" : id} , {"date_debut" : 1 , "_id" : 0 })
+    return debut["date_debut"] if debut else None
 def Get_Event_date_fin(id): 
-    return db.event.find_one({"_id" : id} , {"date_fin" : 1 , "_id" : 0 })
+    fin = db.event.find_one({"_id" : id} , {"date_fin" : 1 , "_id" : 0 })
+    return fin["date_fin"] if fin else None
 def Get_Event_places_max(id): 
-    return db.event.find_one({"_id" : id} , {"places_max": 1 , "_id" : 0 })
+    max =db.event.find_one({"_id" : id} , {"places_max": 1 , "_id" : 0 })
+    return max["places_max"] if max else None
 def Get_Event_places_libres(id): 
-    return db.event.find_one({"_id" : id} , {"places_libres" : 1 , "_id" : 0 })
+    libres =db.event.find_one({"_id" : id} , {"places_libres" : 1 , "_id" : 0 })
+    return libres["places_libres"] if libres else None
 def Get_Event_cash_price(id):
-    return db.event.find_one({"_id" : id} , {"cash_prices" : 1 , "_id" : 0 })
+    cash_price = db.event.find_one({"_id" : id} , {"cash_prices" : 1 , "_id" : 0 })
+    return cash_price["cash_prices"] if cash_price else None
 def Get_Event_status(id):
-    return db.event.find_one({"_id" : id} , {"status" : 1 , "_id" : 0 })
+    status =db.event.find_one({"_id" : id} , {"status" : 1 , "_id" : 0 })
+    return status["status"] if status else None
 
 #setteur event
 def Set_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status): 
@@ -172,21 +179,29 @@ def Sup_Match(id):
 def Get_Match(): 
     return list(db.match.find())
 def Get_Match_equipe1(id): 
-    return db.match.find_one({"_id" : id} , {"equipe1": 1 , "_id" : 0 } )
+    equipe1 =db.match.find_one({"_id" : id} , {"equipe1": 1 , "_id" : 0 } )
+    return list(equipe1["equipe1"]) if equipe1 else None
 def Get_Match_equipe2(id): 
-    return db.match.find_one({"_id" : id} , {"equipe2" : 1 , "_id" : 0 })
+    equipe2 =db.match.find_one({"_id" : id} , {"equipe2" : 1 , "_id" : 0 })
+    return list(equipe2["equipe2"]) if equipe2 else None
 def Get_Match_date(id): 
-    return db.match.find_one({"_id" : id} , {"date" : 1 , "_id" : 0 })
+    date = db.match.find_one({"_id" : id} , {"date" : 1 , "_id" : 0 })
+    return date["date"] if date else None
 def Get_Match_score1(id): 
-    return db.match.find_one({"_id" : id} , {"score1": 1 , "_id" : 0 })
+    score1 =db.match.find_one({"_id" : id} , {"score1": 1 , "_id" : 0 })
+    return  score1["score1"] if score1 else None
 def Get_Match_score2(id): 
-    return db.match.find_one({"_id" : id} , {"score2" : 1 , "_id" : 0 })
+    score2 =db.match.find_one({"_id" : id} , {"score2" : 1 , "_id" : 0 })
+    return score2["score2"] if score2 else None
 def Get_Match_wineur(id):
-    return db.match.find_one({"_id" : id} , {"wineur" : 1 , "_id" : 0 })
+    wineur = db.match.find_one({"_id" : id} , {"wineur" : 1 , "_id" : 0 })
+    return wineur["wineur"] if wineur else None
 def Get_Match_Arbitre(id):
-    return db.match.find_one({"_id" : id} , {"arbitre" : 1 , "_id" : 0 })
+    Arbitre = db.match.find_one({"_id" : id} , {"arbitre" : 1 , "_id" : 0 })
+    return Arbitre["arbitre"] if Arbitre else None
 def Get_Match_event(id):
-    return db.match.find_one({"_id" : id} , {"_event" : 1 , "_id" : 0 })
+    event = db.match.find_one({"_id" : id} , {"_event" : 1 , "_id" : 0 })
+    return event["_event"] if event else None
 
 #setteur Match
 def Set_Match(id,Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event ):
