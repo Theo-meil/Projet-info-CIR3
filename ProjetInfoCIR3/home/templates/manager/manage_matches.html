@@ -52,7 +52,7 @@
                     {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }}
                     <form method="post" style="display:inline;">
                         {% csrf_token %}
-                        <input type="hidden" name="match_id" value="{{ match._id }}">
+                        <input type="hidden" name="match_id" value="{{ match.inserted_id }}">
                         <label for="equipe1">Equipe 1:</label>
                         <select id="equipe1" name="equipe1" required>
                             {% for squad in squads %}
