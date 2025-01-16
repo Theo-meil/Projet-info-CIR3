@@ -110,7 +110,7 @@ def Sup_Event(id):
 # getteur event 
 
 def Get_Event(): 
-    return db.event.find_one({},{"_id" : 1 })
+    return db.event.find({},{"_id" : 1 })
 def Get_Event_nom(id): 
     return db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
 def Get_Event_date_debut(id): 
@@ -155,7 +155,7 @@ def Sup_Match(id):
 
 #getteur Match
 def Get_Match(): 
-    return db.match.find_one({},{"_id" : 1 })
+    return db.match.find({},{"_id" : 1 })
 def Get_Match_equipe1(id): 
     return db.match.find_one({"_id" : id} , {"equipe1": 1 , "_id" : 0 } )
 def Get_Match_equipe2(id): 
