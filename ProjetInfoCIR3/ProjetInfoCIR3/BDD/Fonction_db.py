@@ -142,6 +142,9 @@ def Set_Event_Status(id,Status):
 def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre):
     return db.Event.insertone({equipe1 : Equipe1, equipe2 : Equipe2, date : Date, score1 : Score1, score2 : Score2, wineur : Wineur, arbitre : Arbitre})
 
+def Set_Match(id,Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre):
+    return db.match.update_One({"_id" : id} ,{"$set" :  {equipe1 : Equipe1, equipe2 : Equipe2, date : Date, score1 : Score1, score2 : Score2, wineur : Wineur, arbitre : Arbitre} })
+
 def Sup_Match(id):
     return db.match.delete_one({"_id" : id})
 

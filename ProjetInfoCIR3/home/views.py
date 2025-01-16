@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from ProjetInfoCIR3.BDD.Fonction_db import Get_Utilisateur, Add_Match, Get_Match, Get_Equipe, Get_Utilisateur
+from ProjetInfoCIR3.BDD.Fonction_db import Get_Utilisateur, Add_Match, Get_Match, Get_Equipe, Get_Utilisateur, Set_Match
 
 @login_required
 def home(request):
@@ -20,7 +20,11 @@ def manage_matches(request):
         score2 = request.POST['score2']
         winner = request.POST['winner']
         referee = request.POST['referee']
-        Add_Match(equipe1, equipe2, date, score1, score2, winner, referee)
+        if 'edit_match' in request.POST:
+            match_id = request.POST['match_id']
+            Set_Match(match_id, equipe1, equipe2, date, score1, score2, winner, referee)
+        else:
+            Add_Match(equipe1, equipe2, date, score1, score2, winner, referee)
         return redirect('manage_matches')
     
     matches = Get_Match()

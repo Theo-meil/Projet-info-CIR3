@@ -48,7 +48,40 @@
             <h2>Existing Matches</h2>
             <ul>
                 {% for match in matches %}
-                <li>{{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }}</li>
+                <li>
+                    {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }}
+                    <form method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="match_id" value="{{ match._id }}">
+                        <label for="equipe1">Equipe 1:</label>
+                        <select id="equipe1" name="equipe1" required>
+                            {% for squad in squads %}
+                            <option value="{{ squad.nom }}" {% if squad.nom == match.equipe1 %}selected{% endif %}>{{ squad.nom }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="equipe2">Equipe 2:</label>
+                        <select id="equipe2" name="equipe2" required>
+                            {% for squad in squads %}
+                            <option value="{{ squad.nom }}" {% if squad.nom == match.equipe2 %}selected{% endif %}>{{ squad.nom }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" value="{{ match.date }}" required>
+                        <label for="score1">Score 1:</label>
+                        <input type="number" id="score1" name="score1" value="{{ match.score1 }}" required>
+                        <label for="score2">Score 2:</label>
+                        <input type="number" id="score2" name="score2" value="{{ match.score2 }}" required>
+                        <label for="winner">Winner:</label>
+                        <input type="text" id="winner" name="winner" value="{{ match.winner }}" required>
+                        <label for="referee">Referee:</label>
+                        <select id="referee" name="referee" required>
+                            {% for referee in referees %}
+                            <option value="{{ referee.pseudo }}" {% if referee.pseudo == match.referee %}selected{% endif %}>{{ referee.pseudo }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" name="edit_match">Edit Match</button>
+                    </form>
+                </li>
                 {% endfor %}
             </ul>
         </section>
