@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Link} from "react-router-dom";
 
-export function App() {
+export function CreateEventPage() {
     const [players, setPlayers] = useState([]); // Liste des participants
     const [add, setAdd] = useState(''); // Champ d'ajout de participant
     const [editingPlayer, setEditingPlayer] = useState(null); // Participant en cours de modification
@@ -292,6 +292,6 @@ const styles = {
     },
 };
 
-export default App
+export default CreateEventPage
 // Log to console
 console.log('Ça marche');
