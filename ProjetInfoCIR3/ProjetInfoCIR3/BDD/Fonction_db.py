@@ -56,8 +56,7 @@ def Set_Utilisateur_Nom(id,Nom):
 def Set_Utilisateur_Prenom(id,Prenom): 
     return db.utilisateurs.update_One({"_id" : id} ,{"$set" :  {"prenom" : Prenom} })
 def Set_Utilisateur_Pseudos(id,Pseudo): 
-    return db.utilisateurs.update_One({"_id" : id} ,{"$set" :  {"pseudo": Pseudo
-} })
+    return db.utilisateurs.update_One({"_id" : id} ,{"$set" :  {"pseudo": Pseudo} })
 def Set_Utilisateur_Mot_de_passe(id,Mot_de_passe): 
     return db.utilisateurs.update_One({"_id" : id} , {"$set" : {"mdp" : Mot_de_passe} })
 def Set_Utilisateur_email(id,Email): 
@@ -87,15 +86,19 @@ def Sup_Equipe(id):
 
 #getteur de Equipe
 def Get_Equipe(): 
-    return db.Equipes.find({},{"_id" : 1 })
+    return list(db.utilisateur.find())
 def Get_Equipe_Nom(id): 
-    return db.Equipes.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    Nom = db.Equipes.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    return Nom["nom"]if user else None
 def Get_Equipe_tab_joueur(id): 
-    return db.Equipes.find_one({"_id" : id} , {"tab_joueur" : 1 , "_id" : 0 })
+    tab_joueur =db.Equipes.find_one({"_id" : id} , {"tab_joueur" : 1 , "_id" : 0 })
+    return list(tab_joueur["tab_joueur"]) if user else None
 def Get_Equipe_Manageur(id): 
-    return db.Equipes.find_one({"_id" : id} , {"Manageur" : 1 , "_id" : 0 })
+    Manageur : db.Equipes.find_one({"_id" : id} , {"Manageur" : 1 , "_id" : 0 })
+    return Manageur["Manageur"] if user else None
 def Get_Equipe_jeux(id): 
-    return db.Equipes.find_one({"_id" : id} , {"jeux" : 1 , "_id" : 0 })
+    jeux =db.Equipes.find_one({"_id" : id} , {"jeux" : 1 , "_id" : 0 })
+    return jeux["jeux"] if user else None
 
 #setteur de Equipes
 def Set_Equipes(Nom,Tab_joueur,Manageur,Jeux):
@@ -121,7 +124,8 @@ def Sup_Event(id):
 # getteur event 
 
 def Get_Event(): 
-    return db.event.find({},{"_id" : 1 })
+    
+    return list(db.event.find())
 def Get_Event_nom(id): 
     return db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
 def Get_Event_date_debut(id): 
@@ -166,7 +170,7 @@ def Sup_Match(id):
 
 #getteur Match
 def Get_Match(): 
-    return db.match.find({},{"_id" : 1 })
+    return list(db.match.find())
 def Get_Match_equipe1(id): 
     return db.match.find_one({"_id" : id} , {"equipe1": 1 , "_id" : 0 } )
 def Get_Match_equipe2(id): 
