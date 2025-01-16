@@ -8,6 +8,7 @@ function ProfilePage() {
         firstName: "Prénom",
         username: "NomUtilisateur",
         email: "utilisateur@example.com",
+        creditCard: "CreditCard"
     };
 
     // Exemple de données d'événements (à récup dynamiquement)
@@ -99,6 +100,7 @@ function ProfilePage() {
                     <p style={textStyle}><strong>Prénom :</strong> {userInfo.firstName}</p>
                     <p style={textStyle}><strong>Nom d'utilisateur :</strong> {userInfo.username}</p>
                     <p style={textStyle}><strong>Email :</strong> {userInfo.email}</p>
+                    <p style={textStyle}><strong>Carte bancaire :</strong> {userInfo.creditCard}</p>
                 </section>
 
                 {/* Section des événements de l'utilisateur */}

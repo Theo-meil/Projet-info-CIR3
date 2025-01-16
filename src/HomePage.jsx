@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import { Button, AppBar, Toolbar, Typography, Card, CardContent, Grid, Container } from '@mui/material';
-import './HomePage.css';
 
 function HomePage() {
 
