@@ -266,5 +266,39 @@ def Set_Match_wineur(id,_event):
     result =db.match.update_one({"_id" : id}, {"$set" :  {"_event" : _event} })
     return result.modified_count > 0
 
+# Inscrit
+
+def Add_Inscrit(utilisateur, event):
+    return db.inscrit.insert_one({"utilisateur" : utilisateur , "event" : event})
 
 
+def Sup_Inscrit(id):
+    return db.inscrit.delete_one({"_id" : id})
+
+#getteur inscrit
+def Get_Inscrit(): 
+    return list(db.inscrit.find())
+def Get_inscrit_utilisateur_one(id): 
+    utilisateur =db.inscrit.find_one({"_id" : id} , {"utilisateur": 1 , "_id" : 0 } )
+    return utilisateur["utilisateur"] if utilisateur else None
+def Get_inscrit_event_one(id): 
+    event =db.inscrit.find_one({"_id" : id} , {"event" : 1 , "_id" : 0 })
+    return event["event"] if event else None
+def Get_inscrit_utilisateur_event(event): 
+    utilisateur_all =db.inscrit.find({"event" : event} , {"event": 1 , "_id" : 0 } )
+    return list(utilisateur_all["event"]) if utilisateur_all else None
+def Get_inscrit_event_utilisateur(utilisateur): 
+    event_all =db.inscrit.find({"utilisateur" : utilisateur} , {"event" : 1 , "_id" : 0 })
+    return event_all["event"] if event_all else None
+
+
+#setteur de inscrit
+def Set_Inscrit(utilisateur, event ):
+    result = db.inscrit.update_one({"_id" : id} ,{"$set" :  {"utilisateur" : utilisateur , "event" : event} })
+    return result.modified_count > 0
+def Set_inscrit_utilisateur(id,utilisateur): 
+    result = db.inscrit.update_one({"_id" : id} ,{"$set" :  {"utilisateur" : utilisateur} })
+    return result.modified_count > 0
+def Set_inscrit_equipe2(id,event): 
+    result = db.inscrit.update_one({"_id" : id} ,{"$set" :  {"event" : event} })
+    return result.modified_count > 0
