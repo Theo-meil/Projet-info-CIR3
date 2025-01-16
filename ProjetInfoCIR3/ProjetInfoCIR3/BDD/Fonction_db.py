@@ -145,8 +145,8 @@ def Set_Event_Status(id,Status):
     return db.event.update_One({"_id" : id}, {"$set" :  {"status" : Status} })
 
 # match
-def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre):
-    return db.Event.insertone({"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre})
+def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event):
+    return db.Event.insertone({"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre,"_event" : _event})
 
 
 def Sup_Match(id):
@@ -170,10 +170,12 @@ def Get_Match_wineur(id):
     return db.match.find_one({"_id" : id} , {"wineur" : 1 , "_id" : 0 })
 def Get_Match_Arbitre(id):
     return db.match.find_one({"_id" : id} , {"arbitre" : 1 , "_id" : 0 })
+def Get_Match_event(id):
+    return db.match.find_one({"_id" : id} , {"_event" : 1 , "_id" : 0 })
 
 #setteur Match
-def Set_Match(id,Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre):
-    return db.match.update_One({"_id" : id} ,{"$set" :  {"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre} })
+def Set_Match(id,Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event ):
+    return db.match.update_One({"_id" : id} ,{"$set" :  {"equipe1" : Equipe1, "equipe2" : Equipe2, "date" : Date, "score1" : Score1, "score2" : Score2, "wineur" : Wineur, "arbitre" : Arbitre ,"_event": _event} })
 
 def Set_Match_equipe1(id,Equipe): 
     return db.match.update_One({"_id" : id} ,{"$set" :  {"equipe1" : Equipe} })
@@ -189,3 +191,6 @@ def Set_Match_wineur(id,Wineur):
     return db.match.update_One({"_id" : id}, {"$set" :  {"wineur" : Wineur} })
 def Set_Match_wineur(id,Arbitre): 
     return db.match.update_One({"_id" : id}, {"$set" :  {"arbitre" : Arbitre} })
+def Set_Match_wineur(id,_event): 
+    return db.match.update_One({"_id" : id}, {"$set" :  {"_event" : _event} })
+
