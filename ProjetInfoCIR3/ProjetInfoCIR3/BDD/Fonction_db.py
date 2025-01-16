@@ -76,7 +76,7 @@ def Sup_Equipe(id):
 
 #getteur de Equipe
 def Get_Equipe(): 
-    return db.Equipes.find_one({},{"_id" : 1 })
+    return db.Equipes.find({},{"_id" : 1 })
 def Get_Equipe_Nom(id): 
     return db.Equipes.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
 def Get_Equipe_tab_joueur(id): 
