@@ -28,6 +28,5 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('register/', include('register.urls')),
     path('telemetry/', include('telemetry.urls')),
-    path('api/', (include('home.api.urls'))),
 ]
 
