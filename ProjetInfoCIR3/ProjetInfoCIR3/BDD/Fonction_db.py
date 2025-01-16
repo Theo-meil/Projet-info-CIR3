@@ -11,31 +11,42 @@ def Sup_Utilisateur(id):
 # getteur de la table utilisateur 
 def Get_Utilisateur(): 
     return list(db.utilisateur.find())
-def Get_Utilisateur_Id(pseudo): 
-    return db.utilisateur.find_one({"pseudo": pseudo}, {"_id": 1})
+def Get_Utilisateur_Id(pseudo):
+    id =  db.utilisateur.find_one({"pseudo": pseudo}, {"_id": 1})
+    return id["pseudo"] if user else None
 def Get_Utilisateur_Nom(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    Nom =db.utilisateurs.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
+    return  Nom["nom"] if user else None
 def Get_Utilisateur_Prenom(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"prenom" : 1 , "_id" : 0 })
+    Prenom =db.utilisateurs.find_one({"_id" : id} , {"prenom" : 1 , "_id" : 0 })
+    return Prenom["prenom"] if user else None
 def Get_Utilisateur_Pseudos(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"pseudo": 1 , "_id" : 0 })
+    Pseudos =db.utilisateurs.find_one({"_id" : id} , {"pseudo": 1 , "_id" : 0 })
+    return Pseudos["pseudo"] if user else None
 def Get_Utilisateur_Mot_de_passe(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"mdp" : 1 , "_id" : 0 })
+    mdp =db.utilisateurs.find_one({"_id" : id} , {"mdp" : 1 , "_id" : 0 })
+    return mdp["mdp"] if user else None
 def Get_Utilisateur_email(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"email" : 1 , "_id" : 0 })
+    email =db.utilisateurs.find_one({"_id" : id} , {"email" : 1 , "_id" : 0 })
+    return email["email"] if user else None
 def Get_Utilisateur_cb(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"cb" : 1 , "_id" : 0 })
+    cb =db.utilisateurs.find_one({"_id" : id} , {"cb" : 1 , "_id" : 0 })
+    return cb["cb"] if user else None
 def Get_Utilisateur_Status(id): 
-    user = db.utilisateurs.find_one({"_id": id}, {"status": 1, "_id": 0})
-    return user["status"] if user else None
+    status = db.utilisateurs.find_one({"_id": id}, {"status": 1, "_id": 0})
+    return status["status"] if user else None
 def Get_Utilisateur_Winstreak(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"winstreak" : 1 , "_id" : 0 })
+    winstreak = db.utilisateurs.find_one({"_id" : id} , {"winstreak" : 1 , "_id" : 0 })
+    return winstreak["winstreak"] if user else None
 def Get_Utilisateur_Win(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"win" : 1 , "_id" : 0 })
-def Get_Utilisateur_email(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"lose" : 1 , "_id" : 0 })
+    Win = db.utilisateurs.find_one({"_id" : id} , {"win" : 1 , "_id" : 0 })
+    return Win["win"] if user else None
+def Get_Utilisateur_email(id):
+    lose = db.utilisateurs.find_one({"_id" : id} , {"lose" : 1 , "_id" : 0 })
+    return lose["lose"] if user else None
 def Get_Utilisateur_qrcode(id): 
-    return db.utilisateurs.find_one({"_id" : id} , {"qrcode" : 1 , "_id" : 0 })
+    qrcode =db.utilisateurs.find_one({"_id" : id} , {"qrcode" : 1 , "_id" : 0 })
+    return qrcode["qrcode"]
 # Setteur de la tabble utilisateur
 
 def Set_utilisateur(Nom,Prenom,Pseudo,Mot_de_passe,Email,Status,Winstreak,Win,Lose):
