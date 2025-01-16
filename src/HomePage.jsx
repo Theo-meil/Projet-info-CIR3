@@ -25,7 +25,7 @@ function HomePage() {
                             <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>Créer un compte</Button>
                         </Link>
                         <Link to="/profile" style={{ textDecoration: 'none', marginRight: '10px' }}>
-                            <Button variant="outlined" style={{ color: "#fff", borderColor: "#ff0000" }}>Profie</Button>
+                            <Button variant="outlined" style={{ color: "#fff", borderColor: "#ff0000" }}>Profile</Button>
                         </Link>
                         <Button variant="text" style={{ color: "#fff" }}>Se déconnecter</Button>
                     </div>
