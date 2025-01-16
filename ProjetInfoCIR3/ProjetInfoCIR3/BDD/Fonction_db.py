@@ -68,7 +68,8 @@ def Set_Utilisateur_Status(id,Status):
 def Set_Utilisateur_Winstreak(id,Winstreak): 
     return db.utilisateurs.update_one({"_id" : id} ,{"$set" : {"winstreak" : Winstreak} })
 def Set_Utilisateur_Win(id,Win): 
-    return db.utilisateurs.update_one({"_id" : id},{"$set" : {"win" : Win} })
+    result =db.utilisateurs.update_one({"_id" : id},{"$set" : {"win" : Win} })
+    return result.modified_count > 0
 def Set_Utilisateur_lose(id,Lose): 
     return db.utilisateurs.update_one({"_id" : id} ,{"$set" :  {"lose" : Lose} })
 def Set_Utilisateur_lose(id,Qrcode): 
@@ -94,7 +95,7 @@ def Get_Equipe_tab_joueur(id):
     tab_joueur =db.Equipes.find_one({"_id" : id} , {"tab_joueur" : 1 , "_id" : 0 })
     return list(tab_joueur["tab_joueur"]) if tab_joueur else None
 def Get_Equipe_Manageur(id): 
-    Manageur : db.Equipes.find_one({"_id" : id} , {"Manageur" : 1 , "_id" : 0 })
+    Manageur =db.Equipes.find_one({"_id" : id} , {"Manageur" : 1 , "_id" : 0 })
     return Manageur["Manageur"] if Manageur else None
 def Get_Equipe_jeux(id): 
     jeux =db.Equipes.find_one({"_id" : id} , {"jeux" : 1 , "_id" : 0 })
@@ -115,16 +116,15 @@ def Set_Equipes_jeux(id,Jeux):
 
 
 #table Event ( tournoi)
-def Add_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status):
-    return db.Event.insert_one({"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status})
+def Add_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status,prix,tab_inscrit):
+    return db.Event.insert_one({"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status,"prix":prix, "inscrit":tab_inscrit })
 
 def Sup_Event(id):
     return db.Event.delete_one({"_id" : id})
 
 # getteur event 
 
-def Get_Event(): 
-    
+def Get_Event():     
     return list(db.event.find())
 def Get_Event_nom(id): 
     nom = db.event.find_one({"_id" : id} , {"nom" : 1 , "_id" : 0 } )
@@ -147,10 +147,16 @@ def Get_Event_cash_price(id):
 def Get_Event_status(id):
     status =db.event.find_one({"_id" : id} , {"status" : 1 , "_id" : 0 })
     return status["status"] if status else None
+def Get_Event_prix(id):
+    prix =db.event.find_one({"_id" : id} , {"prix" : 1 , "_id" : 0 })
+    return prix["prix"] if prix else None
+def Get_Event_inscrit(id):
+    inscrit =db.event.find_one({"_id" : id} , {"inscrit" : 1 , "_id" : 0 })
+    return inscrit["inscrit"] if inscrit else None
 
 #setteur event
-def Set_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status): 
-    return db.event.update_One({"_id" : id} ,{"$set" :   {"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status}})
+def Set_Event(Nom,Date_debut,Date_fin,Places_max,Places_libres,Cash_price,Status,prix,tab_inscrit): 
+    return db.event.update_One({"_id" : id} ,{"$set" :   {"nom" : Nom , "date_deput": Date_debut, "date_fin" : Date_fin, "places_max" : Places_max, "places_libres" : Places_libres, "cash_price" : Cash_price, "status" : Status,"prix":prix, "inscrit":tab_inscrit}})
 def Set_Event_nom(id,Nom): 
     return db.event.update_one({"_id" : id} ,{"$set" :  {"nom" : Nom} })
 def Set_Event_date_debut(id,Date_debut): 
@@ -165,6 +171,10 @@ def Set_Event_cash_price(id,Cash_price):
     return db.event.update_one({"_id" : id}, {"$set" :  {"cash_price" : Cash_price} })
 def Set_Event_Status(id,Status): 
     return db.event.update_one({"_id" : id}, {"$set" :  {"status" : Status} })
+def Set_Event_prix(id,prix): 
+    return db.event.update_one({"_id" : id}, {"$set" :  {"prix" : prix} })
+def Set_Event_inscrit(id,inscrit): 
+    return db.event.update_one({"_id" : id}, {"$set" :  {"inscrit" : inscrit} })
 
 # match
 def Add_Match(Equipe1,Equipe2,Date,Score1,Score2,Wineur, Arbitre, _event):
