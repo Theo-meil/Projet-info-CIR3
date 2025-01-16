@@ -2,103 +2,169 @@ import React, { useState } from "react";
 import {Link} from "react-router-dom";
 
 export function CreateEventPage() {
-    const [players, setPlayers] = useState([]); // Liste des participants
-    const [add, setAdd] = useState(''); // Champ d'ajout de participant
-    const [editingPlayer, setEditingPlayer] = useState(null); // Participant en cours de modification
-    const [newPseudo, setNewPseudo] = useState(''); // Nouveau pseudo proposé
+    const [eventData, setEventData] = useState({
+        eventName: "",
+        eventCreator: "",
+        participationFee: "",
+        prize: "",
+        maxParticipants: "",
+        description: "",
+        eventDate: "", // Ajout du champ pour la date
+        eventImage: null,
+    });
+    const [eventCode, setEventCode] = useState(null);
+    const [showPaymentMessage, setShowPaymentMessage] = useState(false);
 
-    // Fonction pour ajouter un participant
-    const handleAddParticipant = () => {
-        if (add.trim() === '') {
-            alert("Veuillez entrer un pseudo avant d'ajouter un participant !");
-            return;
-        }
-        setPlayers([...players, { participant: add, code: generateCode() }]);
-        setAdd('');
-    };
-
-    // Fonction pour supprimer un participant
-    const handleDeleteParticipant = (code) => {
-        setPlayers((prev) => prev.filter((player) => player.code !== code));
-    };
-
-    // Fonction pour générer un code aléatoire avec un #
-    const generateCode = () => {
-        const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    // Fonction pour générer un code d'événement unique
+    const generateEventCode = () => {
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         let code = "#";
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
             code += characters.charAt(Math.floor(Math.random() * characters.length));
         }
         return code;
     };
 
-    // Ouvrir la fenêtre de modification
-    const openEditWindow = (player) => {
-        setEditingPlayer(player);
-        setNewPseudo(player.participant);
+    // Fonction pour gérer les changements dans le formulaire
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEventData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Appliquer la modification du pseudo
-    const handleEditParticipant = () => {
-        setPlayers((prev) =>
-            prev.map((p) =>
-                p.code === editingPlayer.code
-                    ? { ...p, participant: newPseudo }
-                    : p
-            )
-        );
-        setEditingPlayer(null);
-        setNewPseudo('');
+    // Gestion de l'image insérée par l'utilisateur
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setEventData((prev) => ({ ...prev, eventImage: URL.createObjectURL(file) }));
+        }
     };
 
-    // Annuler la modification
-    const closeEditWindow = () => {
-        setEditingPlayer(null);
-        setNewPseudo('');
+    // Fonction pour soumettre le formulaire
+    const handleSubmit = () => {
+        if (
+            !eventData.eventName ||
+            !eventData.eventCreator ||
+            !eventData.participationFee ||
+            !eventData.prize ||
+            !eventData.maxParticipants ||
+            !eventData.eventDate // Vérification de la date
+        ) {
+            alert("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        // Simule le paiement
+        setShowPaymentMessage(true);
+
+        setTimeout(() => {
+            // Génère un code d'événement après le paiement
+            const newEventCode = generateEventCode();
+            setEventCode(newEventCode);
+            setShowPaymentMessage(false);
+            alert(`Événement créé avec succès ! Code d'événement : ${newEventCode}`);
+        }, 2000); // Délai simulé pour le paiement
     };
 
     return (
         <div style={styles.page}>
             <Menu />
-            <div style={styles.container}>
-                <Add
-                    add={add}
-                    onAddChange={setAdd}
-                    onAddParticipant={handleAddParticipant}
+            <h1 style={styles.title}>Créez un évènement</h1>
+            <div style={styles.form}>
+                <label style={styles.label}>Organisateur</label>
+                <input
+                    type="text"
+                    name="eventCreator"
+                    value={eventData.eventCreator}
+                    onChange={handleChange}
+                    style={styles.input}
+                    placeholder="Nom de l'organisateur..."
                 />
-                <PlayersData
-                    players={players}
-                    onEdit={openEditWindow}
-                    onDelete={handleDeleteParticipant}
+                <label style={styles.label}>Nom de l'évènement</label>
+                <input
+                    type="text"
+                    name="eventName"
+                    value={eventData.eventName}
+                    onChange={handleChange}
+                    style={styles.input}
+                    placeholder="Nom de l'évènement..."
                 />
-                <button
-                    style={styles.validateButton}
-                    onClick={() => alert("Validation effectuée !")}
-                >
-                    Valider
+
+                <label style={styles.label}>Ajoutez une image</label>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={styles.fileInput}
+                />
+                {eventData.eventImage && (
+                    <div style={styles.imagePreview}>
+                        <img
+                            src={eventData.eventImage}
+                            alt="Aperçu"
+                            style={styles.image}
+                        />
+                    </div>
+                )}
+
+                <label style={styles.label}>Date de l'évènement</label>
+                <input
+                    type="date"
+                    name="eventDate"
+                    value={eventData.eventDate}
+                    onChange={handleChange}
+                    style={styles.input}
+                />
+
+                <label style={styles.label}>Tarif de Participation (€)</label>
+                <input
+                    type="number"
+                    name="participationFee"
+                    value={eventData.participationFee}
+                    onChange={handleChange}
+                    style={styles.input}
+                    placeholder="Tarif"
+                />
+
+                <label style={styles.label}>Prix à Gagner (€)</label>
+                <input
+                    type="number"
+                    name="prize"
+                    value={eventData.prize}
+                    onChange={handleChange}
+                    style={styles.input}
+                    placeholder="Prix pour le gagnant"
+                />
+
+                <label style={styles.label}>Nombre de Participants</label>
+                <input
+                    type="number"
+                    name="maxParticipants"
+                    value={eventData.maxParticipants}
+                    onChange={handleChange}
+                    style={styles.input}
+                    placeholder="Nombre de participants..."
+                />
+
+                <label style={styles.label}>Description</label>
+                <textarea
+                    name="description"
+                    value={eventData.description}
+                    onChange={handleChange}
+                    style={styles.textarea}
+                    placeholder="Ajoutez une description (facultatif)"
+                />
+
+                <button onClick={handleSubmit} style={styles.submitButton}>
+                    Créer l'Événement
                 </button>
             </div>
 
-            {/* Mini-fenêtre de modification */}
-            {editingPlayer && (
-                <div style={styles.modalBackdrop}>
-                    <div style={styles.modal}>
-                        <h3 style={{ color: "#ff0000" }}>Modifier le pseudo</h3>
-                        <input
-                            type="text"
-                            value={newPseudo}
-                            onChange={(e) => setNewPseudo(e.target.value)}
-                            style={styles.input}
-                        />
-                        <div style={styles.modalActions}>
-                            <button style={styles.addButton} onClick={handleEditParticipant}>
-                                Valider
-                            </button>
-                            <button style={styles.resetButton} onClick={closeEditWindow}>
-                                Annuler
-                            </button>
-                        </div>
-                    </div>
+            {eventCode && (
+                <div style={styles.eventCode}>
+                    <h2>Votre événement a été créé avec succès !</h2>
+                    <p>
+                        <strong>Code d'Événement :</strong> {eventCode}
+                    </p>
                 </div>
             )}
         </div>
@@ -110,188 +176,121 @@ function Menu() {
     return (
         <div style={styles.menu}>
             <Link to="/">
-                <button
-                    style={styles.menuButton}
-                    /*onClick={() => alert("Retour à la page précédente !")}*/
-                >
-                    Retour
-                </button>
+                <button style={styles.menuButton}>Retour</button>
             </Link>
-
         </div>
     );
 }
 
-// Composant d'ajout de participant
-function Add({add, onAddChange, onAddParticipant}) {
-    return (
-        <div style={styles.addContainer}>
-            <input
-                type="text"
-                style={styles.input}
-                value={add}
-                placeholder="Ajouter un participant"
-                onChange={(e) => onAddChange(e.target.value)}
-            />
-            <button style={styles.addButton} onClick={onAddParticipant}>
-                Ajouter
-            </button>
-        </div>
-    );
-}
-
-// Affichage des participants
-function PlayersData({ players, onEdit, onDelete }) {
-    return (
-        <table style={styles.table}>
-            <thead>
-            <tr>
-                <th style={styles.header}>Participant</th>
-                <th style={styles.header}>Code</th>
-                <th style={styles.header}></th>
-            </tr>
-            </thead>
-            <tbody>
-            {players.map((player, index) => (
-                <PlayerRow
-                    key={index}
-                    player={player}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                />
-            ))}
-            </tbody>
-        </table>
-    );
-}
-
-// Ligne d'un participant
-function PlayerRow({ player, onEdit, onDelete }) {
-    return (
-        <tr style={styles.row}>
-            <td style={styles.cell}>{player.participant}</td>
-            <td style={styles.cell}>{player.code}</td>
-            <td style={styles.cell}>
-                <button
-                    style={styles.deleteButton}
-                    onClick={() => onDelete(player.code)}
-                >
-                    X
-                </button>
-            </td>
-        </tr>
-    );
-}
-
-// Styles
+// Styles pour le composant
 const styles = {
     page: {
-        backgroundColor: "#1e1e1e",
-        color: "#fff",
-        fontFamily: '"Orbitron", sans-serif',
-        padding: "20px",
         minHeight: "100vh",
+        minWidth: "130vh",
         display: "flex",
         flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
-        gap: "20px",
+        backgroundColor: "#1a1a1a",
+        color: "#fff",
+        padding: "20px",
     },
-    menu: {
-        width: "100%",
-        backgroundColor: "#2c2c2c",
-        padding: "10px",
+    title: {
+        fontSize: "36px",
+        fontWeight: "bold",
         marginBottom: "20px",
-        display: "flex",
-        justifyContent: "flex-start",
+        color: "#ffcc00",
+        textAlign: "center",
     },
-    menuButton: {
-        backgroundColor: "#ff0000",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        padding: "10px 15px",
-        cursor: "pointer",
-        fontSize: "16px",
-        fontWeight: "bold",
-        fontFamily: '"Orbitron", sans-serif',
-    },
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "20px",
-        width: "100%",
+    form: {
+        backgroundColor: "#000",
+        padding: "30px",
+        borderRadius: "10px",
         maxWidth: "600px",
-    },
-    table: {
         width: "100%",
-        borderCollapse: "collapse",
-        backgroundColor: "#2c2c2c",
-        color: "#fff",
-    },
-    header: {
-        textAlign: "left",
-        fontWeight: "bold",
-        padding: "10px",
-        borderBottom: "2px solid #ff0000",
-        color: "#ff0000",
-    },
-    row: {
-        borderBottom: "1px solid #444",
-        transition: "background 0.3s",
-    },
-    cell: {
-        padding: "10px",
-        textAlign: "left",
-    },
-    addContainer: {
+        boxShadow: "0 0 20px rgba(255, 255, 255, 0.2)",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        gap: "10px",
-        width: "100%",
+        gap: "20px",
     },
-    addButton: {
-        backgroundColor: "#ff0000",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        padding: "10px 15px",
-        cursor: "pointer",
-        fontSize: "16px",
+    label: {
         fontWeight: "bold",
-    },
-    validateButton: {
-        backgroundColor: "#ff0000",
+        marginBottom: "5px",
         color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        padding: "10px 15px",
-        fontSize: "16px",
-        fontWeight: "bold",
-        cursor: "pointer",
-        textTransform: "uppercase",
-    },
-    deleteButton: {
-        backgroundColor: "#ff0000",
-        color: "#fff",
-        border: "none",
-        borderRadius: "5px",
-        padding: "5px 10px",
-        cursor: "pointer",
-        fontWeight: "bold",
     },
     input: {
         width: "100%",
         padding: "10px",
-        fontSize: "16px",
         border: "1px solid #444",
         borderRadius: "5px",
-        backgroundColor: "#2c2c2c",
+        backgroundColor: "#1a1a1a",
         color: "#fff",
+        fontSize: "16px",
+    },
+    textarea: {
+        width: "100%",
+        height: "100px",
+        padding: "10px",
+        border: "1px solid #444",
+        borderRadius: "5px",
+        backgroundColor: "#1a1a1a",
+        color: "#fff",
+        fontSize: "16px",
+    },
+    fileInput: {
+        padding: "10px",
+        borderRadius: "5px",
+        backgroundColor: "#1a1a1a",
+        color: "#fff",
+    },
+    imagePreview: {
+        marginTop: "10px",
+        textAlign: "center",
+    },
+    image: {
+        maxWidth: "100%",
+        maxHeight: "200px",
+        borderRadius: "10px",
+    },
+    submitButton: {
+        backgroundColor: "#ff0000",
+        color: "#fff",
+        border: "none",
+        borderRadius: "5px",
+        padding: "10px 15px",
+        cursor: "pointer",
+        fontSize: "16px",
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        width: "100%",
+    },
+    menu: {
+        width: "100%",
+        marginBottom: "20px",
+        display: "flex",
+        justifyContent: "center",
+    },
+    menuButton: {
+        backgroundColor: "#ffcc00",
+        color: "#000",
+        border: "none",
+        borderRadius: "5px",
+        padding: "10px 15px",
+        cursor: "pointer",
+        fontSize: "16px",
+        fontWeight: "bold",
+        fontFamily: '"Orbitron", sans-serif',
+    },
+    eventCode: {
+        marginTop: "30px",
+        backgroundColor: "#000",
+        padding: "20px",
+        borderRadius: "10px",
+        boxShadow: "0 0 20px rgba(255, 255, 255, 0.2)",
+        textAlign: "center",
+        color: "#ffcc00",
     },
 };
 
-export default CreateEventPage
-// Log to console
-console.log('Ça marche');
+
+export default CreateEventPage;

@@ -27,7 +27,7 @@ function SignUpPage() {
     };
 
     return (
-        <Container style={{ minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#1a1a1a" }}>
+        <Container style={{ minHeight: "120vh", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "#1a1a1a" }}>
             <Box
                 style={{
                     backgroundColor: "#000",

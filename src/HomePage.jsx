@@ -60,8 +60,8 @@ function HomePage() {
                                     <Typography variant="body2" style={{ color: "#fff" }}>
                                         Récompense : {tournament.prize}
                                     </Typography>
-                                    <Link to="/ticket-office" style={{ textDecoration: 'none' }}>
-                                        <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff", marginTop: '10px' }}>
+                                    <Link to="/ticket-office" state={tournament}>
+                                        <Button variant="contained" style={{ backgroundColor: "#ff0000", color: "#fff" }}>
                                             Réserver
                                         </Button>
                                     </Link>
