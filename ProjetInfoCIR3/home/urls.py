@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, include, re_path
 from . import views
+from home.views import react_app  # Importez votre vue React
+from django.contrib import admin
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -15,3 +17,7 @@ urlpatterns = [
     path('view_team_history/', views.view_team_history, name='view_team_history'),
     path('view_user_history/', views.view_user_history, name='view_user_history'),
 ]
+
+
+
+

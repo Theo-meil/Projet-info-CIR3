@@ -6,6 +6,22 @@ from io import BytesIO
 from django.http import HttpResponse
 from PIL import Image
 
+from django.http import HttpResponse
+from django.conf import settings
+import os
+
+def react_app(request):
+    # Chemin complet vers le fichier index.html
+    index_path = os.path.join(settings.BASE_DIR, 'static/react/dist/index.html')
+    
+    # Vérifiez si le fichier existe
+    if os.path.exists(index_path):
+        with open(index_path, 'r') as file:
+            return HttpResponse(file.read(), content_type='text/html')
+    return HttpResponse("index.html not found", status=404)
+
+
+
 @login_required
 def home(request):
     user_name = request.user.username  # Get the current user's name
