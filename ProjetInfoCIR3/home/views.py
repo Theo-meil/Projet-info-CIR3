@@ -26,11 +26,16 @@ def manage_matches(request):
         referee = request.POST['referee']
         event = request.POST['event']
         if 'edit_match' in request.POST:
-            match_id = request.POST['match_id']
-            Set_Match(match_id, equipe1, equipe2, date, score1, score2, winner, referee, event)
+            match = next((match for match in Get_Match() if match['equipe1'] == equipe1 and match['equipe2'] == equipe2 and match['_event'] == event), None)
+            Set_Match(equipe1, equipe2, date, score1, score2, winner, referee, event)
+            if (match != None) :
+                message = "Match updated successfully!"
+            else:
+                message = "ERROR: Match not found."
         else:
             Add_Match(equipe1, equipe2, date, score1, score2, winner, referee, event)
-        return redirect('manage_matches')
+            message = "Match added successfully!"
+        return render(request, 'manager/manage_matches.html', {'message': message})
     
     matches = Get_Match()
     squads = Get_Equipe()
@@ -49,9 +54,10 @@ def manage_events(request):
         status = request.POST['status']
         prix = request.POST['prix']
         if 'edit_event' in request.POST:
-            event_id = request.POST['event_id']
-            places_libres = 5  # Temporary solution
-            Set_Event(event_id, nom, date_debut, date_fin, places_max, places_libres, cash_price, status, prix)
+            event = next((event for event in Get_Event() if event['nom'] == nom), None)
+            places_libres = int(places_max) - len(event['inscrit'])
+            tab_inscrit = event['inscrit']
+            Set_Event(nom, date_debut, date_fin, places_max, places_libres, cash_price, status, prix, tab_inscrit)
         else:
             places_libres = places_max
             Add_Event(nom, date_debut, date_fin, places_max, places_libres, cash_price, status, prix)
@@ -149,10 +155,7 @@ def view_tickets(request):
             box_size=20,
             border=4,
         )
-        qr.add_data(event_name)
-        qr.add_data(user_firstname)
-        qr.add_data(user_lastname)
-        qr.add_data(user_pseudonym)
+        qr.add_data("event: "+event_name+", name: "+user_firstname+" \""+user_pseudonym+"\" "+user_lastname)
         qr.make(fit=True)
         img = qr.make_image(fill='black', back_color='white')
         buffer = BytesIO()
@@ -161,6 +164,49 @@ def view_tickets(request):
         return HttpResponse(buffer, content_type="image/png")
     
     return render(request, 'spectator/view_tickets.html', {'events': events})
+
+@login_required
+def view_team_history(request):
+    user_name = request.user.username
+    team = next((team for team in Get_Equipe() if user_name in team['tab_joueur']), None)
+    if team:
+        team_name = team['nom']
+        matches = [match for match in Get_Match() if match['equipe1'] == team_name or match['equipe2'] == team_name]
+        for match in matches:
+            match['status'] = 'completed' if match['score1'] is not None and match['score2'] is not None else 'pending'
+            if match['status'] == 'completed':
+                if (match['equipe1'] == team_name and match['score1'] > match['score2']) or (match['equipe2'] == team_name and match['score2'] > match['score1']):
+                    match['result'] = 'win'
+                else:
+                    match['result'] = 'defeat'
+            else:
+                match['result'] = 'pending'
+    else:
+        matches = []
+    return render(request, 'player/view_team_history.html', {'matches': matches})
+
+@login_required
+def view_user_history(request):
+    user_name = request.user.username
+    user_events = [event for event in Get_Event() if user_name in event['inscrit']]
+    user_history = []
+    for event in user_events:
+        event_matches = [match for match in Get_Match() if match['_event'] == event['nom']]
+        team_wins = {}
+        for match in event_matches:
+            match['status'] = 'completed' if match['score1'] is not None and match['score2'] is not None else 'pending'
+            if match['status'] == 'completed':
+                if match['score1'] > match['score2']:
+                    winner = match['equipe1']
+                else:
+                    winner = match['equipe2']
+                team_wins[winner] = team_wins.get(winner, 0) + 1
+            else:
+                winner = 'pending'
+            match['winner'] = winner
+        overall_winner = max(team_wins, key=team_wins.get) if team_wins else 'pending'
+        user_history.append({'event': event, 'matches': event_matches, 'overall_winner': overall_winner})
+    return render(request, 'spectator/view_user_history.html', {'user_history': user_history})
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect

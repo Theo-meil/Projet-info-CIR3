@@ -15,7 +15,7 @@ def register(request):
                 pseudo=user.username,
                 mot_de_pass=user.password,
                 email=request.POST['email'],
-                statut=request.POST['status'],  # get status from form
+                status=request.POST['status'],  # get status from form
             )
             messages.success(request, 'Account created successfully!')
             return redirect('login')

@@ -158,7 +158,7 @@ def Get_Event_inscrit(id):
 
 #setteur event
 def Set_Event(nom,date_debut,date_fin,place_max,place_libre,cash_price,status,prix,tab_inscrit): 
-    result = db.event.update_One({"_id" : id} ,{"$set" :   {"nom" : nom , "date_debut": date_debut, "date_fin" : date_fin, "place_max" : place_max, "place_libre" : place_libre, "cash_price" : cash_price, "status" : status,"prix":prix, "inscrit":tab_inscrit}})
+    result = db.event.update_one({"nom" : nom} ,{"$set" :  {"date_debut": date_debut, "date_fin" : date_fin, "place_max" : place_max, "place_libre" : place_libre, "cash_price" : cash_price, "status" : status,"prix":prix, "inscrit":tab_inscrit }})
     return result.modified_count > 0
 def Set_Event_nom(id,nom): 
     result = db.event.update_one({"_id" : id} ,{"$set" :  {"nom" : nom} })
@@ -226,8 +226,8 @@ def Get_Match_event(id):
     return event["_event"] if event else None
 
 #setteur match
-def Set_Match(id,equipe1,equipe2,date,score1,score2,wineur, arbitre, _event ):
-    result = db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : equipe1, "equipe2" : equipe2, "date" : date, "score1" : score1, "score2" : score2, "wineur" : wineur, "arbitre" : arbitre ,"_event": _event} })
+def Set_Match(equipe1,equipe2,date,score1,score2,wineur, arbitre, _event ):
+    result = db.match.update_one({"equipe1" : equipe1, "equipe2" : equipe2, "_event" : _event} ,{"$set" :  {"equipe1" : equipe1, "equipe2" : equipe2, "date" : date, "score1" : score1, "score2" : score2, "wineur" : wineur, "arbitre" : arbitre ,"_event": _event} })
     return result.modified_count > 0
 def Set_Match_equipe1(id,equipe): 
     result = db.match.update_one({"_id" : id} ,{"$set" :  {"equipe1" : equipe} })
