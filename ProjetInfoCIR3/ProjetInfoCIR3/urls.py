@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 from home import views as home_views
 from home.views import react_app  # Importez votre vue React
 
+
 """
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,10 +35,14 @@ urlpatterns = [
 ]
     """
     
-    
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('API/', include('testAPI.urls')),  # Garde les endpoints API existants
+    path('TAPI/', include('testAPI.urls')),  # Garde les endpoints API existants
     path('', react_app, name='react'),  # Route par défaut (racine) pour React
-    re_path(r'^(?!API/).*$', react_app),  # Redirige toutes les autres routes non "API" vers React
-]
+    #re_path(r'^(?!API/).*$', react_app),
+    path('api/login/', include('login.urls')),  # Inclure les routes API de l'app login
+    path('api/register/', include('register.urls')),  # Inclure les routes API de l'app register
+
+    
+    ]
