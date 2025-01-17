@@ -60,14 +60,14 @@
                         {% csrf_token %}
                         <input type="hidden" name="match_id" value="{{ match.inserted_id }}">
                         <label for="equipe1_dis">Equipe 1:</label>
-                        <input hidden type="text" id="equipe1" name="equipe1" value="{{ match.equipe1 }}" required>
+                        <input hidden type="text" id="equipe1" name="equipe1" value="{{ match.equipe1 }}" >
                         <select id="equipe1_dis" name="equipe1_dis" disabled>
                             {% for squad in squads %}
                             <option value="{{ squad.nom }}" {% if squad.nom == match.equipe1 %}selected{% endif %}>{{ squad.nom }}</option>
                             {% endfor %}
                         </select>
                         <label for="equipe2_dis">Equipe 2:</label>
-                        <input hidden type="text" id="equipe2" name="equipe2" value="{{ match.equipe2 }}" required>
+                        <input hidden type="text" id="equipe2" name="equipe2" value="{{ match.equipe2 }}">
                         <select id="equipe2_dis" name="equipe2_dis" disabled>
                             {% for squad in squads %}
                             <option value="{{ squad.nom }}" {% if squad.nom == match.equipe2 %}selected{% endif %}>{{ squad.nom }}</option>
@@ -92,8 +92,9 @@
                             {% endfor %}
                         </select>
                         <label for="event_dis">Event:</label>
-                        <input hidden type="text" id="event" name="event" value="{{ match.event }}" required>
-                        <select id="event_dis" name="event_dis" disabled>
+                        <!--input hidden type="text" id="event" name="event" value="{{ match.event }}"-->
+                        <select id="event" name="event">
+                            <option value="Select an event" disabled>Select an event</option>
                             {% for event in events %}
                             <option value="{{ event.nom }}" {% if event.nom == match.event %}selected{% endif %}>{{ event.nom }}</option>
                             {% endfor %}

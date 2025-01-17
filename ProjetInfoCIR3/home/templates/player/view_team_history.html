@@ -21,6 +21,28 @@
                 {% endfor %}
             </ul>
         </section>
+        <section>
+            <h2>Overall Tournament Wins</h2>
+            <p>Total Wins: {{ overall_wins }}</p>
+        </section>
+        <section>
+            <h2>Tournaments</h2>
+            <ul>
+                {% for tournament in tournaments %}
+                <li>
+                    <h3>{{ tournament.event.nom }} ({{ tournament.event.date_debut }} - {{ tournament.event.date_fin }})</h3>
+                    <p>Result: {{ tournament.result }}</p>
+                    <ul>
+                        {% for match in tournament.matches %}
+                        <li>
+                            {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Status: {{ match.status }} - Result: {{ match.result }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
     </main>
 </body>
 </html>
