@@ -37,6 +37,6 @@
 {
   "name": "example-app",
   "engines": {
-    "node": "22.x"
+    "node": "v20.11.0"
   }
 }
