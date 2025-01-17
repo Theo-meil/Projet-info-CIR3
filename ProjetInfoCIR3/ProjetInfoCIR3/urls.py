@@ -28,5 +28,6 @@ urlpatterns = [
     path('home/', include('home.urls')),
     path('register/', include('register.urls')),
     path('telemetry/', include('telemetry.urls')),
+    path('API/', include('testAPI.urls')),  # Add this line to include the testAPI app
 ]
 
