@@ -43,9 +43,11 @@ def manage_matches(request):
         event = request.POST['event']
         if 'edit_match' in request.POST:
             match = next((match for match in Get_Match() if match['equipe1'] == equipe1 and match['equipe2'] == equipe2 and match['_event'] == event), None)
-            Set_Match(equipe1, equipe2, date, score1, score2, winner, referee, event)
+            print(equipe1, equipe2, event)
+            #print(match[equipe1], match[equipe2], match[event])
             if (match != None) :
                 message = "Match updated successfully!"
+                Set_Match(equipe1, equipe2, date, score1, score2, winner, referee, event)
             else:
                 message = "ERROR: Match not found."
         else:
@@ -188,18 +190,37 @@ def view_team_history(request):
     if team:
         team_name = team['nom']
         matches = [match for match in Get_Match() if match['equipe1'] == team_name or match['equipe2'] == team_name]
+        event_wins = {}
+        event_losses = {}
         for match in matches:
             match['status'] = 'completed' if match['score1'] is not None and match['score2'] is not None else 'pending'
             if match['status'] == 'completed':
-                if (match['equipe1'] == team_name and match['score1'] > match['score2']) or (match['equipe2'] == team_name and match['score2'] > match['score1']):
+                if match['wineur'] == team_name:
                     match['result'] = 'win'
+                    event_wins[match['_event']] = event_wins.get(match['_event'], 0) + 1
                 else:
                     match['result'] = 'defeat'
+                    event_losses[match['_event']] = event_losses.get(match['_event'], 0) + 1
             else:
                 match['result'] = 'pending'
+        overall_wins = sum(event_wins.values())
+        overall_losses = sum(event_losses.values())
+        tournaments = []
+        for event_name, wins in event_wins.items():
+            event = next((event for event in Get_Event() if event['nom'] == event_name), None)
+            event_matches = [match for match in matches if match['_event'] == event_name]
+            tournament_result = 'win' if wins == max(event_wins.values()) else 'lose'
+            tournaments.append({'event': event, 'matches': event_matches, 'result': tournament_result})
+        for event_name, losses in event_losses.items():
+            event = next((event for event in Get_Event() if event['nom'] == event_name), None)
+            event_matches = [match for match in matches if match['_event'] == event_name]
+            tournament_result = 'lose' if losses == max(event_losses.values()) else 'win'
+            tournaments.append({'event': event, 'matches': event_matches, 'result': tournament_result})
     else:
         matches = []
-    return render(request, 'player/view_team_history.html', {'matches': matches})
+        overall_wins = 0
+        tournaments = []
+    return render(request, 'player/view_team_history.html', {'matches': matches, 'overall_wins': overall_wins, 'tournaments': tournaments})
 
 @login_required
 def view_user_history(request):
@@ -212,10 +233,7 @@ def view_user_history(request):
         for match in event_matches:
             match['status'] = 'completed' if match['score1'] is not None and match['score2'] is not None else 'pending'
             if match['status'] == 'completed':
-                if match['score1'] > match['score2']:
-                    winner = match['equipe1']
-                else:
-                    winner = match['equipe2']
+                winner = match['wineur']
                 team_wins[winner] = team_wins.get(winner, 0) + 1
             else:
                 winner = 'pending'
