@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from ProjetInfoCIR3.BDD.Fonction_db import Get_Utilisateur, Add_Match, Get_Match, Get_Equipe, Get_Utilisateur, Set_Match, Get_Event, Add_Event, Set_Event
+from ProjetInfoCIR3.BDD.Fonction_db import Get_Utilisateur, Add_Match, Get_Match, Get_Equipe, Get_Utilisateur, Set_Match, Get_Event, Add_Event, Set_Event, Add_Equipe, Get_Equipe_password, Set_Equipe_tab_joueur, Set_Utilisateur_status, Set_Event_cash_price, Set_Event_inscrit, Set_Event_places_min
+import qrcode
+from io import BytesIO
+from django.http import HttpResponse
+from PIL import Image
 
 @login_required
 def home(request):
@@ -16,9 +20,9 @@ def manage_matches(request):
         equipe1 = request.POST['equipe1']
         equipe2 = request.POST['equipe2']
         date = request.POST['date']
-        score1 = request.POST['score1']
-        score2 = request.POST['score2']
-        winner = request.POST['winner']
+        score1 = request.POST.get('score1')
+        score2 = request.POST.get('score2')
+        winner = request.POST.get('winner')
         referee = request.POST['referee']
         event = request.POST['event']
         if 'edit_match' in request.POST:
@@ -32,7 +36,6 @@ def manage_matches(request):
     squads = Get_Equipe()
     referees = [user for user in Get_Utilisateur() if user['status'] == 'referee']
     events = Get_Event()
-    print(events)
     return render(request, 'manager/manage_matches.html', {'matches': matches, 'squads': squads, 'referees': referees, 'events': events})
 
 @login_required
@@ -44,21 +47,120 @@ def manage_events(request):
         places_max = request.POST['places_max']
         cash_price = request.POST['cash_price']
         status = request.POST['status']
-        print("QUOICOUBEH")
+        prix = request.POST['prix']
         if 'edit_event' in request.POST:
             event_id = request.POST['event_id']
-            #### TEMP SOLUTION #########
-            # REPLACE WITH A QUERY TO THE "EVENT_SUBSCRIPTION" TABLE ONCE IMPLEMENTED
-            places_libres = 5
-            ############################
-            Set_Event(event_id, nom, date_debut, date_fin, places_max, places_libres, cash_price, status)
+            places_libres = 5  # Temporary solution
+            Set_Event(event_id, nom, date_debut, date_fin, places_max, places_libres, cash_price, status, prix)
         else:
             places_libres = places_max
-            Add_Event(nom, date_debut, date_fin, places_max, places_libres, cash_price, status)
+            Add_Event(nom, date_debut, date_fin, places_max, places_libres, cash_price, status, prix)
         return redirect('manage_events')
     
     events = Get_Event()
     return render(request, 'manager/manage_events.html', {'events': events})
+
+@login_required
+def manage_team(request):
+    message = ""
+    if request.method == 'POST':
+        if 'create_team' in request.POST:
+            team_name = request.POST['team_name']
+            password = request.POST['password']
+            Add_Equipe(team_name, [request.user.username], password)
+            return redirect('manage_team')
+        elif 'join_team' in request.POST:
+            team_name = request.POST['team_name']
+            password = request.POST['password']
+            team = next((team for team in Get_Equipe() if team['nom'] == team_name), None)
+            if team and team['password'] == password:
+                # don't add the player if he's already in the team
+                if request.user.username in team['tab_joueur']:
+                    message = "You are already in this team."
+                    return render(request, 'player/manage_team.html', {'teams': Get_Equipe(), 'message': message})
+                # Remove user from previous team
+                for t in Get_Equipe():
+                    if request.user.username in t['tab_joueur']:
+                        t['tab_joueur'].remove(request.user.username)
+                        Set_Equipe_tab_joueur(t['_id'], t['tab_joueur'])
+                # Add user to new team
+                team['tab_joueur'].append(request.user.username)
+                Set_Equipe_tab_joueur(team['_id'], team['tab_joueur'])
+                return redirect('manage_team')
+            else:
+                message = "Incorrect password. Please try again."
+    
+    teams = Get_Equipe()
+    return render(request, 'player/manage_team.html', {'teams': teams, 'message': message})
+
+@login_required
+def donate(request):
+    if request.method == 'POST':
+        event_id = request.POST['event']
+        amount = float(request.POST['amount'])
+        event = next((event for event in Get_Event() if event['nom'] == event_id), None)
+        print(event_id, "----------", Get_Event())
+        if event:
+            new_cash_price = str(int(event['cash_price']) + amount)
+            Set_Event_cash_price(event_id, new_cash_price)
+        return redirect('donate')
+    
+    events = Get_Event()
+    return render(request, 'spectator/donate.html', {'events': events})
+
+@login_required
+def buy_ticket(request):
+    message = ""
+    user_role = next((user['status'] for user in Get_Utilisateur() if user['pseudo'] == request.user.username), None)
+    if request.method == 'POST':
+        event_id = request.POST['event']
+        event = next((event for event in Get_Event() if event['nom'] == event_id), None)
+        if event:
+            if request.user.username in event['inscrit']:
+                message = "You already have a ticket for this event."
+            elif int(event['place_libre']) > 0:
+                event['inscrit'].append(request.user.username)
+                event['place_libre'] = str(int(event['place_libre']) - 1)
+                Set_Event_inscrit(event['_id'], event['inscrit'])
+                Set_Event_places_min(event['_id'], event['place_libre'])
+                # Add half of the ticket price to the cash prize if not free
+                if user_role not in ['streamer', 'commentator']:
+                    new_cash_price = str(int(event['cash_price']) + (int(event['prix']) / 2))
+                    Set_Event_cash_price(event_id, new_cash_price)
+                message = "Ticket purchased successfully!"
+            else:
+                message = "No available spots for this event."
+        return render(request, 'spectator/buy_ticket.html', {'events': Get_Event(), 'message': message, 'user_role': user_role})
+    
+    events = Get_Event()
+    return render(request, 'spectator/buy_ticket.html', {'events': events, 'message': message, 'user_role': user_role})
+
+@login_required
+def view_tickets(request):
+    user_pseudonym = request.user.username
+    user_firstname = next((user['prenom'] for user in Get_Utilisateur() if user['pseudo'] == user_pseudonym), None)
+    user_lastname = next((user['nom'] for user in Get_Utilisateur() if user['pseudo'] == user_pseudonym), None)
+    events = [event for event in Get_Event() if user_pseudonym in event['inscrit']]
+    if request.method == 'POST':
+        event_name = request.POST['event']
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_M,
+            box_size=20,
+            border=4,
+        )
+        qr.add_data(event_name)
+        qr.add_data(user_firstname)
+        qr.add_data(user_lastname)
+        qr.add_data(user_pseudonym)
+        qr.make(fit=True)
+        img = qr.make_image(fill='black', back_color='white')
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        buffer.seek(0)
+        return HttpResponse(buffer, content_type="image/png")
+    
+    return render(request, 'spectator/view_tickets.html', {'events': events})
 
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -70,3 +172,20 @@ def custom_logout(request):
 def role_management(request):
     # Page that allows the user to manage other users' roles. Managers and admin can set the role of other users (except admin, which can only be set by another admin)
     return render(request, 'role_management.html')
+
+@login_required
+def manage_accounts(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        status = request.POST['status']
+        user = next((user for user in Get_Utilisateur() if user['pseudo'] == username), None)
+        if user:
+            user_id = user['_id']
+            if Set_Utilisateur_status(user_id, status):
+                return redirect('manage_accounts')
+            else:
+                return render(request, 'manager/manage_accounts.html', {'error': 'Failed to update status'})
+        else:
+            return render(request, 'manager/manage_accounts.html', {'error': 'User not found'})
+    print("quoicoubeh")
+    return render(request, 'manager/manage_accounts.html')

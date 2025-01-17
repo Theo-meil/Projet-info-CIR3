@@ -28,13 +28,7 @@
                     {% endfor %}
                 </select><br>
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required><br>
-                <label for="score1">Score 1:</label>
-                <input type="number" id="score1" name="score1"><br>
-                <label for="score2">Score 2:</label>
-                <input type="number" id="score2" name="score2"><br>
-                <label for="winner">Winner: (leave blank if match didn't occur)</label>
-                <input type="text" id="winner" name="winner"><br>
+                <input type="datetime-local" id="date" name="date" required><br>
                 <label for="referee">Referee:</label>
                 <select id="referee" name="referee" required>
                     {% for referee in referees %}
@@ -55,7 +49,10 @@
             <ul>
                 {% for match in matches %}
                 <li>
-                    {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }} - Referee: {{ match.referee }} - Event: {{ match.event }}
+                    {{ match.equipe1 }} vs {{ match.equipe2 }} on {{ match.date }} - Referee: {{ match.referee }} - Event: {{ match.event }}
+                    {% if match.event_status == 'completed' %}
+                    - Score: {{ match.score1 }} - {{ match.score2 }} - Winner: {{ match.winner }}
+                    {% endif %}
                     <form method="post" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="match_id" value="{{ match.inserted_id }}">
@@ -72,13 +69,15 @@
                             {% endfor %}
                         </select>
                         <label for="date">Date:</label>
-                        <input type="date" id="date" name="date" value="{{ match.date }}" required>
+                        <input type="datetime-local" id="date" name="date" value="{{ match.date }}" required>
+                        {% if match.event_status == 'completed' %}
                         <label for="score1">Score 1:</label>
                         <input type="number" id="score1" name="score1" value="{{ match.score1 }}" required>
                         <label for="score2">Score 2:</label>
                         <input type="number" id="score2" name="score2" value="{{ match.score2 }}" required>
                         <label for="winner">Winner:</label>
                         <input type="text" id="winner" name="winner" value="{{ match.winner }}" required>
+                        {% endif %}
                         <label for="referee">Referee:</label>
                         <select id="referee" name="referee" required>
                             {% for referee in referees %}

@@ -27,6 +27,8 @@
                 <input type="number" id="cash_price" name="cash_price" required><br>
                 <label for="status">Status:</label>
                 <input type="text" id="status" name="status" required><br>
+                <label for="prix">Cost:</label>
+                <input type="number" id="prix" name="prix"><br>
                 <button type="submit">Create Event</button>
             </form>
         </section>
@@ -35,7 +37,7 @@
             <ul>
                 {% for event in events %}
                 <li>
-                    {{ event.nom }} from {{ event.date_debut }} to {{ event.date_fin }} - Places: {{ event.places_max }} ({{ event.places_libres }} available) - Cash Prize: {{ event.cash_price }} - Status: {{ event.status }}
+                    {{ event.nom }} from {{ event.date_debut }} to {{ event.date_fin }} - Places: {{ event.place_max }} ({{ event.place_libre }} available) - Cash Prize: {{ event.cash_price }} - Status: {{ event.statut }} - Cost: {{ event.prix }}<br/>
                     <form method="post" style="display:inline;">
                         {% csrf_token %}
                         <input type="hidden" name="event_id" value="{{ event.inserted_id }}">
@@ -51,6 +53,8 @@
                         <input type="number" id="cash_price" name="cash_price" value="{{ event.cash_price }}" required>
                         <label for="status">Status:</label>
                         <input type="text" id="status" name="status" value="{{ event.status }}" required>
+                        <label for="prix">Cost:</label>
+                        <input type="number" id="prix" name="prix" value="{{ event.prix }}">
                         <button type="submit" name="edit_event">Edit Event</button>
                     </form>
                 </li>
