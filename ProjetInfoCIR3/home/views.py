@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import logout
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from ProjetInfoCIR3.BDD.Fonction_db import Get_Utilisateur, Add_Match, Get_Match, Get_Equipe, Get_Utilisateur, Set_Match, Get_Event, Add_Event, Set_Event, Add_Equipe, Get_Equipe_password, Set_Equipe_tab_joueur, Set_Utilisateur_status, Set_Event_cash_price, Set_Event_inscrit, Set_Event_places_min
 import qrcode
@@ -242,12 +245,16 @@ def view_user_history(request):
         user_history.append({'event': event, 'matches': event_matches, 'overall_winner': overall_winner})
     return render(request, 'spectator/view_user_history.html', {'user_history': user_history})
 
-from django.contrib.auth import logout
-from django.shortcuts import redirect
 
+
+
+@csrf_protect
 def custom_logout(request):
-    logout(request)  # Logs out the user
-    return redirect('login')  # Redirect to login page
+    if request.method == "POST":
+        logout(request)
+        return JsonResponse({"success": True, "message": "Déconnexion réussie"})
+    return JsonResponse({"success": False, "message": "Méthode non autorisée"}, status=405)
+
 
 def role_management(request):
     # Page that allows the user to manage other users' roles. Managers and admin can set the role of other users (except admin, which can only be set by another admin)

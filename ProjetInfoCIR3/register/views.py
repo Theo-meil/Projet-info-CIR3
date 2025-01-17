@@ -1,11 +1,11 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .forms import CustomUserCreationForm
 from ProjetInfoCIR3.BDD.Fonction_db import Add_utilisateur
 import json
 
 
-@csrf_exempt
+@csrf_protect
 def register(request):
     if request.method == 'POST':
         try:

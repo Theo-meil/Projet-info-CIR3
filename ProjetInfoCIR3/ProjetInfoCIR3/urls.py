@@ -41,8 +41,12 @@ urlpatterns = [
     path('TAPI/', include('testAPI.urls')),  # Garde les endpoints API existants
     path('', react_app, name='react'),  # Route par défaut (racine) pour React
     #re_path(r'^(?!API/).*$', react_app),
+   
     path('api/login/', include('login.urls')),  # Inclure les routes API de l'app login
     path('api/register/', include('register.urls')),  # Inclure les routes API de l'app register
+    path('logout/', home_views.custom_logout, name='logout'), # Directs to the Django logout view
+
+    path('telemetry/', include('telemetry.urls')),
 
     
     ]

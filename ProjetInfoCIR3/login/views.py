@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib import messages
 from django.http import JsonResponse
 import json
 
-
+@csrf_protect
 def login(request):
     print("Login view reached")
     if request.method == 'POST':

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Container, Typography, TextField, Box, Alert, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import { Link } from "react-router-dom";
+import { getCSRFToken } from "@/utils/csrf";
+
 
 function SignUpPage() {
     const [formData, setFormData] = useState({
@@ -25,15 +27,24 @@ function SignUpPage() {
     setError("");
     setSuccess(false);
 
+    const csrfToken = getCSRFToken(); // Récupérez le CSRF Token
+
+    if (!csrfToken) {
+        setError("CSRF Token non trouvé. Veuillez réessayer.");
+        return;
+    }
+
     try {
         const response = await fetch("/api/register/", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken, // Ajoutez le CSRF Token ici
+            },
             body: JSON.stringify(formData),
         });
 
         if (!response.ok) {
-            // Si la réponse n'est pas un succès, loguez l'erreur brute
             const errorText = await response.text();
             console.error("Erreur HTTP :", response.status, errorText);
             setError("Une erreur est survenue : " + errorText);
@@ -56,6 +67,7 @@ function SignUpPage() {
         setError("Une erreur s'est produite. Veuillez réessayer.");
     }
 };
+
 
     return (
         <Container

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Container, Typography, TextField, Box, Alert } from "@mui/material";
 import { Link } from "react-router-dom";
+import { getCSRFToken } from "@/utils/csrf";
+
 
 function LoginAccountPage() {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -12,36 +14,48 @@ function LoginAccountPage() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        setSuccess(false);
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess(false);
 
-        if (!formData.username || !formData.password) {
-            setError("Veuillez remplir tous les champs.");
+    const csrfToken = getCSRFToken(); // Récupérez le CSRF Token
+
+    if (!csrfToken) {
+        setError("CSRF Token non trouvé. Veuillez réessayer.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/login/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken, // Ajoutez le CSRF Token ici
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Erreur HTTP :", response.status, errorText);
+            setError("Une erreur est survenue : " + errorText);
             return;
         }
 
-        try {
-            const response = await fetch("/api/login/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-
-            if (data.success) {
-                setSuccess(true);
-                console.log(data.message);
-                // Redirection ou logique supplémentaire après connexion réussie
-            } else {
-                setError(data.message);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la connexion :", error);
-            setError("Une erreur s'est produite. Veuillez réessayer.");
+        const data = await response.json();
+        if (data.success) {
+            setSuccess(true);
+            console.log(data.message);
+        } else {
+            setError(data.message);
         }
-    };
+    } catch (error) {
+        console.error("Erreur lors de la requête :", error);
+        setError("Une erreur s'est produite. Veuillez réessayer.");
+    }
+};
+
 
     return (
         <Container
